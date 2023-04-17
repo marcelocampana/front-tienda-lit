@@ -1,14 +1,22 @@
-// webpack.config.js
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+//import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import { fileURLToPath } from "url";
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const config = {
+  stats: {
+    assets: true,
+  },
   mode: "development",
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -22,6 +30,10 @@ module.exports = {
           },
         },
       },
+      /*    {
+        test: /\.css$/i,
+        use: [{ loader: "lit-css-loader" }, { loader: "css-loader" }],
+      }, */
     ],
   },
   plugins: [
@@ -29,9 +41,4 @@ module.exports = {
       template: "./public/index.html",
     }),
   ],
-  devServer: {
-    static: path.join(__dirname, "dist"),
-    compress: true,
-    port: 3001,
-  },
 };
