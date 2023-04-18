@@ -7,6 +7,7 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import { config } from "./webpack.config.js";
+import { Sign } from "crypto";
 
 const app = express();
 const compiler = webpack(config);
@@ -20,19 +21,11 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+app.get(["/", "/checkout", "/cart", "/sign-in"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.get("/contact", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-app.get("/servicios", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-//app.use(webpackHotMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler));
 
 const PORT = process.env.PORT || 3001;
 

@@ -5,7 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-export class Home5 extends withTwind(LitElement) {
+export class ProductCard extends withTwind(LitElement) {
   render() {
     return html`<div
       class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
@@ -27,18 +27,16 @@ export class Home5 extends withTwind(LitElement) {
         <div class="flex flex-1 flex-col justify-end">
           <p class="text-sm italic text-gray-500">Rojo</p>
           <p class="text-base font-medium text-gray-900">$1500</p>
-          <form method="post" action="/api/cart/add">
-            <input type="hidden" name="product_id" value="1" />
-            <button
-              type="submit"
-              class="mt-5 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Agregar al carrito
-            </button>
-          </form>
+          <input type="hidden" name="product_id" value="1" />
+          <button
+            type="submit"
+            class="mt-5 rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Agregar al carrito
+          </button>
         </div>
       </div>
     </div>`;
   }
 }
-customElements.define("component-home5", Home5);
+customElements.define("product-card", ProductCard);

@@ -5,7 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-export class Home3 extends withTwind(LitElement) {
+export class NavBar extends withTwind(LitElement) {
   render() {
     return html`<div class="bg-white">
       <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -711,4 +711,4 @@ export class Home3 extends withTwind(LitElement) {
   }
 }
 
-customElements.define("component-home3", Home3);
+customElements.define("nav-bar", NavBar);

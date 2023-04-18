@@ -1,1 +1,1 @@
-import "./router-component.js";
+import "./pagesRouter.js";
