@@ -1,10 +1,11 @@
 import { LitElement, html } from "lit";
+
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-class Nav extends withTwind(LitElement) {
+export class Nav extends withTwind(LitElement) {
   render() {
     html`<div class="bg-white">
       <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -710,4 +711,4 @@ class Nav extends withTwind(LitElement) {
   }
 }
 
-customElements.define("nav-bar", Nav);
+customElements.define("com-bar1", Nav);

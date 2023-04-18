@@ -1,17 +1,14 @@
-// public/my-component.js
-import { LitElement, html, css, unsafeCSS } from "lit";
+import { LitElement, html } from "lit";
 
-import styles from "../css/main.js";
+import install from "@twind/with-web-components";
+import config from "../../twind.config.js";
 
-class MyComponent1 extends LitElement {
+const withTwind = install(config);
+
+export class Home extends withTwind(LitElement) {
   render() {
-    return html`
-      <style>
-        ${styles}
-      </style>
-      <p class="text-lg text-blue-500">Componente Home 1</p>
-    `;
+    return html` <p class="text-4xl font-bold underline">Home!</p>
+      <p class="text-blue-500">This text should be blue</p>`;
   }
 }
-
-customElements.define("my-component1", MyComponent1);
+customElements.define("component-home", Home);

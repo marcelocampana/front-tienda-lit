@@ -2,7 +2,8 @@ import { LitElement, html } from "lit";
 import "./components/my-component1.js";
 import "./components/my-component2.js";
 import "./components/card.js";
-import "./components/nav.js";
+import "./components/component-nav.js";
+import "./components/product-component.js";
 
 class RouterComponent extends LitElement {
   static properties() {
@@ -16,10 +17,9 @@ class RouterComponent extends LitElement {
   render() {
     switch (this.route) {
       case "/":
-        return html` <my-component1></my-component1>`;
+        return html` <component-home></component-home>`;
       case "/contact":
-        return html` <nav-bar></nav-bar>
-          <card-component></card-component>`;
+        return html` <component-home4></component-home4> `;
     }
   }
 }

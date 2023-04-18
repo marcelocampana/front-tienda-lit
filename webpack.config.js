@@ -8,9 +8,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const config = {
-  stats: {
-    assets: true,
-  },
   mode: "development",
   entry: "./src/index.js",
   output: {

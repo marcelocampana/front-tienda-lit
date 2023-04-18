@@ -5,7 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-export class Home4 extends withTwind(LitElement) {
+export class Home5 extends withTwind(LitElement) {
   render() {
     html`<div
       class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
@@ -41,4 +41,4 @@ export class Home4 extends withTwind(LitElement) {
     </div>`;
   }
 }
-customElements.define("component-home4", Home4);
+customElements.define("component-home5", Home5);
