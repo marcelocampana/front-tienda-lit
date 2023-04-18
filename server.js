@@ -28,7 +28,11 @@ app.get("/contact", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.use(webpackHotMiddleware(compiler));
+app.get("/servicios", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+//app.use(webpackHotMiddleware(compiler));
 
 const PORT = process.env.PORT || 3001;
 

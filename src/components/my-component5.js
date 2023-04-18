@@ -7,7 +7,7 @@ const withTwind = install(config);
 
 export class Home5 extends withTwind(LitElement) {
   render() {
-    html`<div
+    return html`<div
       class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
     >
       <div
