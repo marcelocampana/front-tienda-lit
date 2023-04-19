@@ -769,7 +769,7 @@ export class ProductFilter extends withTwind(LitElement) {
 
             <!-- Product grid -->
           <div class="col-span-2"> 
-            <div class="grid grid-cols-3 gap-4 my-5"><product-card></product-card></div>
+            <product-card></product-card>
             </div>
             </div>
           </div>
