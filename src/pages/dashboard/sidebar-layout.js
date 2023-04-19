@@ -1,14 +1,10 @@
 import { LitElement, html } from "lit";
-import "../components/nav-bar.js";
-import "../components/shopping-cart.js";
-import "../components/store-footer.js";
+import "../../components/admin-sidebar.js";
 
 export class SidebarLayout extends LitElement {
   render() {
-    return html` <nav-bar></nav-bar>
-      <shopping-cart></shopping-cart>
-      <store-footer></store-footer>`;
+    return html` <admin-sidebar></admin-sidebar> `;
   }
 }
 
-customElements.define("cart-page", SidebarLayout);
+customElements.define("sidebar-layout", SidebarLayout);

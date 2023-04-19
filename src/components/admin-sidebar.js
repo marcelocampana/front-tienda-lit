@@ -531,6 +531,7 @@ export class AdminSidebar extends withTwind(LitElement) {
       <main class="py-10 lg:pl-72">
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
+          <slot></slot>
         </div>
       </main>
     </div>`;

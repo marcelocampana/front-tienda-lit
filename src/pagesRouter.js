@@ -3,6 +3,8 @@ import "./pages/store-home.js";
 import "./pages/checkout-page.js";
 import "./pages/cart-page.js";
 import "./pages/sign-page.js";
+import "./pages/dashboard/product-add.js";
+import "./pages/dashboard/product-list.js";
 
 class RouterComponent extends LitElement {
   static properties() {
@@ -23,6 +25,10 @@ class RouterComponent extends LitElement {
         return html`<cart-page></cart-page>`;
       case "/sign-in":
         return html`<sign-in></sign-in>`;
+      case "/dashboard/add-product":
+        return html`<add-product></add-product>`;
+      case "/dashboard/list-product":
+        return html`<product-list></product-list>`;
     }
   }
 }
