@@ -24,7 +24,7 @@ app.use(
 app.get(["/", "/checkout", "/cart", "/sign-in"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
-app.get(["/dashboard/add-product", "/dashboard/list-product"], (req, res) => {
+app.get(["/dashboard/product-add", "/dashboard/list-product"], (req, res) => {
   res.sendFile(__dirname + "/public/dashboard.html");
 });
 
