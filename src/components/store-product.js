@@ -5,7 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-export class ProductCard extends withTwind(LitElement) {
+export class StoreProduct extends withTwind(LitElement) {
   static properties = {
     data: [],
   };
@@ -15,8 +15,6 @@ export class ProductCard extends withTwind(LitElement) {
     this.totalProductInCart = JSON.parse(localStorage.getItem("cart"));
     this.cart = new Set([...this.totalProductInCart]);
   }
-
-  
 
   async fetchData() {
     try {
@@ -85,4 +83,4 @@ export class ProductCard extends withTwind(LitElement) {
     </div>`;
   }
 }
-customElements.define("product-card", ProductCard);
+customElements.define("store-product", StoreProduct);

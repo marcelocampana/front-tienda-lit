@@ -5,7 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-export class ProductCheckout extends withTwind(LitElement) {
+export class StoreCheckout extends withTwind(LitElement) {
   render() {
     return html`<div class="bg-gray-50">
       <div
@@ -590,4 +590,4 @@ export class ProductCheckout extends withTwind(LitElement) {
   }
 }
 
-customElements.define("product-checkout", ProductCheckout);
+customElements.define("store-checkout", StoreCheckout);

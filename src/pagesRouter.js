@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import "./pages/store-home.js";
+import "./pages/home-page.js";
 import "./pages/checkout-page.js";
 import "./pages/cart-page.js";
 import "./pages/sign-page.js";
@@ -18,16 +18,16 @@ class RouterComponent extends LitElement {
   render() {
     switch (this.route) {
       case "/":
-        return html` <store-home></store-home>`;
+        return html` <home-page></home-page>`;
       case "/checkout":
         return html`<checkout-page></checkout-page>`;
       case "/cart":
         return html`<cart-page></cart-page>`;
       case "/sign-in":
-        return html`<sign-in></sign-in>`;
+        return html`<sign-page></sign-page>`;
       case "/dashboard/product-add":
         return html`<product-add></product-add>`;
-      case "/dashboard/list-product":
+      case "/dashboard/product-list":
         return html`<product-list></product-list>`;
     }
   }

@@ -5,9 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
-import "./product-card.js";
-
-export class ProductFilter extends withTwind(LitElement) {
+export class StoreFilter extends withTwind(LitElement) {
   render() {
     return html`<div class="bg-white">
       <div>
@@ -769,14 +767,14 @@ export class ProductFilter extends withTwind(LitElement) {
 
             <!-- Product grid -->
           <div class="col-span-2"> 
-            <product-card></product-card>
+            <slot></slot>
             </div>
             </div>
           </div>
         </main>
       </div>
-    </div> `;
+    </div>`;
   }
 }
 
-customElements.define("product-filter", ProductFilter);
+customElements.define("store-filter", StoreFilter);

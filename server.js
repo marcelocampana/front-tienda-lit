@@ -1,5 +1,3 @@
-// server.js
-
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -24,7 +22,7 @@ app.use(
 app.get(["/", "/checkout", "/cart", "/sign-in"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
-app.get(["/dashboard/product-add", "/dashboard/list-product"], (req, res) => {
+app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {
   res.sendFile(__dirname + "/public/dashboard.html");
 });
 
