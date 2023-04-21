@@ -2,10 +2,24 @@ import { LitElement, html } from "lit";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
+import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 
-export class SignIn extends withTwind(LitElement) {
+import CryptoJS from "crypto-js";
+const key = "mi clave secreta";
+
+export class StoreLogin extends withTwind(LitElement) {
+  async handleSubmit(e) {
+    e.preventDefault();
+    const user = {
+      email: e.target.email.value,
+      password: CryptoJS.AES.encrypt(e.target.password.value, key).toString(),
+    };
+    const apiManager = new ApiManager("http://localhost:4000/api/auth");
+    const result = await apiManager.verifyUser(user);
+    console.log(result);
+  }
   render() {
     return html` <div class="h-full bg-gray-900">
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -18,12 +32,12 @@ export class SignIn extends withTwind(LitElement) {
           <h2
             class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white"
           >
-            Sign in to your account
+            Acceder
           </h2>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" action="#" method="POST">
+          <form class="space-y-6" @submit=${this.handleSubmit}>
             <div>
               <label
                 for="email"
@@ -74,7 +88,7 @@ export class SignIn extends withTwind(LitElement) {
                 type="submit"
                 class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
-                Sign in
+                Acceder
               </button>
             </div>
           </form>
@@ -94,4 +108,4 @@ export class SignIn extends withTwind(LitElement) {
   }
 }
 
-customElements.define("sign-in", SignIn);
+customElements.define("store-login", StoreLogin);

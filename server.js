@@ -5,7 +5,6 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import { config } from "./webpack.config.js";
-import { Sign } from "crypto";
 
 const app = express();
 const compiler = webpack(config);
@@ -19,7 +18,7 @@ app.use(
   })
 );
 
-app.get(["/", "/checkout", "/cart", "/sign-in"], (req, res) => {
+app.get(["/", "/checkout", "/cart", "/login", "/signin"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {

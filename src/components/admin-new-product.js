@@ -2,9 +2,10 @@ import { LitElement, html } from "lit";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
-import { ApiManager } from "../classes/apiManager.js";
 
 const withTwind = install(config);
+
+import { ApiManager } from "../services/ApiManager.js";
 
 export class AdminNewProduct extends withTwind(LitElement) {
   static properties = {
