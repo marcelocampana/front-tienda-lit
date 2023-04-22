@@ -1,6 +1,7 @@
 import path from "path";
+import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-//import MiniCssExtractPlugin from "mini-css-extract-plugin";
+//import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
 import { fileURLToPath } from "url";
 
@@ -27,15 +28,26 @@ export const config = {
           },
         },
       },
-      /*    {
-        test: /\.css$/i,
-        use: [{ loader: "lit-css-loader" }, { loader: "css-loader" }],
-      }, */
     ],
   },
+  resolve: {
+    fallback: {
+      stream: path.resolve(__dirname, "node_modules/stream-browserify"),
+      crypto: path.resolve(__dirname, "node_modules/crypto-browserify"),
+    },
+  },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+    }),
+    // new NodePolyfillPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        PASSWORD_KEY: JSON.stringify(process.env.PASSWORD_KEY),
+        SECRET_KEY: JSON.stringify(process.env.SECRET_KEY),
+        API_HOSTNAME: JSON.stringify(process.env.API_HOSTNAME),
+      },
     }),
   ],
 };

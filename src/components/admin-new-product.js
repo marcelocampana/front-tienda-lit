@@ -12,14 +12,12 @@ export class AdminNewProduct extends withTwind(LitElement) {
     data: [],
   };
   async getApiData() {
-    const apiManager = new ApiManager(
-      "http://localhost:4000/api/v1/categories/"
-    );
+    const apiManager = new ApiManager("/api/v1/categories/");
     this.data = await apiManager.getData();
   }
 
   async addApiData(postData) {
-    const apiManager = new ApiManager("http://localhost:4000/api/v1/products/");
+    const apiManager = new ApiManager("/api/v1/products/");
     const result = apiManager.addData(postData);
     await result;
     console.log(result);
@@ -50,11 +48,10 @@ export class AdminNewProduct extends withTwind(LitElement) {
         <div class="space-y-12">
           <div class="pb-5">
             <h2 class="text-base font-semibold leading-7 text-gray-900">
-              Profile
+              Productos
             </h2>
             <p class="mt-1 text-sm leading-6 text-gray-600">
-              This information will be displayed publicly so be careful what you
-              share.
+              Esta informacion será pública
             </p>
 
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -142,10 +139,10 @@ export class AdminNewProduct extends withTwind(LitElement) {
                             class="sr-only"
                           />
                         </label>
-                        <p class="pl-1">or drag and drop</p>
+                        <p class="pl-1">o arrastra aquí</p>
                       </div>
                       <p class="text-xs leading-5 text-gray-600">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF de hasta 10MB
                       </p>
                     </div>
                   </div>
@@ -203,7 +200,7 @@ export class AdminNewProduct extends withTwind(LitElement) {
           type="submit"
             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Save
+            Guardar
           </button>
         </div>
       </form>

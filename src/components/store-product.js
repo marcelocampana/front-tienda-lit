@@ -35,12 +35,12 @@ export class StoreProduct extends withTwind(LitElement) {
     this.fetchData();
   }
 
-  saveToCart(id) {
+  /*   saveToCart(id) {
     console.log(this.totalProductInCart);
     const product = this.data.filter((item) => item.product_id === id);
     this.cart.add(product[0]);
     localStorage.setItem("cart", JSON.stringify([...this.cart]));
-  }
+  } */
 
   render() {
     return html` <div class="grid grid-cols-3 gap-3">

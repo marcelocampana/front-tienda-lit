@@ -451,11 +451,10 @@ export class StoreFilter extends withTwind(LitElement) {
         >
           <div class="border-b border-gray-200 pb-10">
             <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-              New Arrivals
+              Nuevos Productos
             </h1>
             <p class="mt-4 text-base text-gray-500">
-              Checkout out the latest release of Basic Tees, new and improved
-              with four openings!
+           Conoce nuestra nueva línea toda temporada para que te veas como quieras cuando quieras!
             </p>
           </div>
 
@@ -497,7 +496,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="color-0"
                             class="ml-3 text-sm text-gray-600"
-                            >White</label
+                            >Blanco</label
                           >
                         </div>
 
@@ -527,7 +526,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="color-2"
                             class="ml-3 text-sm text-gray-600"
-                            >Blue</label
+                            >Azul</label
                           >
                         </div>
 
@@ -542,7 +541,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="color-3"
                             class="ml-3 text-sm text-gray-600"
-                            >Brown</label
+                            >Café</label
                           >
                         </div>
 
@@ -557,7 +556,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="color-4"
                             class="ml-3 text-sm text-gray-600"
-                            >Green</label
+                            >Verde</label
                           >
                         </div>
 
@@ -572,7 +571,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="color-5"
                             class="ml-3 text-sm text-gray-600"
-                            >Purple</label
+                            >Rosado</label
                           >
                         </div>
                       </div>
@@ -582,7 +581,7 @@ export class StoreFilter extends withTwind(LitElement) {
                   <div class="pt-10">
                     <fieldset>
                       <legend class="block text-sm font-medium text-gray-900">
-                        Category
+                        Categoría
                       </legend>
                       <div class="space-y-3 pt-6">
                         <div class="flex items-center">
@@ -596,7 +595,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="category-0"
                             class="ml-3 text-sm text-gray-600"
-                            >All New Arrivals</label
+                            >Lo mas nuevo</label
                           >
                         </div>
 
@@ -611,7 +610,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="category-1"
                             class="ml-3 text-sm text-gray-600"
-                            >Tees</label
+                            >Juvenil</label
                           >
                         </div>
 
@@ -626,7 +625,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="category-2"
                             class="ml-3 text-sm text-gray-600"
-                            >Crewnecks</label
+                            >Casual</label
                           >
                         </div>
 
@@ -641,7 +640,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="category-3"
                             class="ml-3 text-sm text-gray-600"
-                            >Sweatshirts</label
+                            >Hombre</label
                           >
                         </div>
 
@@ -656,7 +655,7 @@ export class StoreFilter extends withTwind(LitElement) {
                           <label
                             for="category-4"
                             class="ml-3 text-sm text-gray-600"
-                            >Pants &amp; Shorts</label
+                            >Mujer</label
                           >
                         </div>
                       </div>
@@ -666,7 +665,7 @@ export class StoreFilter extends withTwind(LitElement) {
                   <div class="pt-10">
                     <fieldset>
                       <legend class="block text-sm font-medium text-gray-900">
-                        Sizes
+                        Tallas
                       </legend>
                       <div class="space-y-3 pt-6">
                         <div class="flex items-center">

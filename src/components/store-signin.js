@@ -1,44 +1,47 @@
 import { LitElement, html } from "lit";
 import CryptoJS from "crypto-js";
-/* import dotenv from "dotenv";
-dotenv.config(); */
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken-promisified";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
 import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
-
 export class StoreSignin extends withTwind(LitElement) {
   async handleSubmit(e) {
     e.preventDefault();
-    const token = jwt.sign({ username: e.target.email.value }, "mysecretkey");
-    console.log(token);
+    console.log(process.env.PASSWORD_KEY);
+    const payload = { id: 123 };
+    const secretKey = process.env.SECRET_KEY;
+    const token = await jwt.sign(payload, secretKey);
+
+    const encryptedPassword = CryptoJS.AES.encrypt(
+      e.target.password.value,
+      process.env.PASSWORD_KEY
+    ).toString();
+
+    console.log(encryptedPassword);
     const user = {
       email: e.target.email.value,
-      password: CryptoJS.AES.encrypt(
-        e.target.password.value,
-        process.env.PASSWORD_KEY
-      ).toString(),
+      password: encryptedPassword,
     };
-    const apiManager = new ApiManager("http://localhost:4000/api/auth");
+    const apiManager = new ApiManager("/api/auth");
     const result = await apiManager.addData(user);
-    console.log(result);
+    console.log(token, "--", result, process.env.PASSWORD_KEY);
   }
   render() {
-    return html` <div class="h-full bg-gray-900">
+    return html` <div class="h-screen bg-gray-900">
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
-            class="mx-auto h-10 w-auto"
+            class="mx-auto w-auto hidden"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
             alt="Your Company"
           />
           <h2
             class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white"
           >
-            Crear cuenta
+       Crear cuenta
           </h2>
         </div>
 
@@ -48,7 +51,7 @@ export class StoreSignin extends withTwind(LitElement) {
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-white"
-                >Email address</label
+                >Email</label
               >
               <div class="mt-2">
                 <input
@@ -67,9 +70,9 @@ export class StoreSignin extends withTwind(LitElement) {
                 <label
                   for="password"
                   class="block text-sm font-medium leading-6 text-white"
-                  >Password</label
+                  >Contraseña</label
                 >
-                <div class="text-sm">
+                <div class="text-sm hidden">
                   <a
                     href="#"
                     class="font-semibold text-indigo-400 hover:text-indigo-300"
@@ -100,11 +103,11 @@ export class StoreSignin extends withTwind(LitElement) {
           </form>
 
           <p class="mt-10 text-center text-sm text-gray-400">
-            Not a member?
+            Ya tienes un cuenta?
             <a
-              href="#"
+              href="/login"
               class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300"
-              >Start a 14 day free trial</a
+              >Accede aquí!</a
             >
           </p>
         </div>

@@ -17,14 +17,14 @@ export class StoreCheckout extends withTwind(LitElement) {
           <div>
             <div>
               <h2 class="text-lg font-medium text-gray-900">
-                Contact information
+                Información de contacto
               </h2>
 
               <div class="mt-4">
                 <label
                   for="email-address"
                   class="block text-sm font-medium text-gray-700"
-                  >Email address</label
+                  >Email</label
                 >
                 <div class="mt-1">
                   <input
@@ -39,9 +39,7 @@ export class StoreCheckout extends withTwind(LitElement) {
             </div>
 
             <div class="mt-10 border-t border-gray-200 pt-10">
-              <h2 class="text-lg font-medium text-gray-900">
-                Shipping information
-              </h2>
+              <h2 class="text-lg font-medium text-gray-900">Datos de envío</h2>
 
               <div
                 class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4"
@@ -50,7 +48,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="first-name"
                     class="block text-sm font-medium text-gray-700"
-                    >First name</label
+                    >Nombre</label
                   >
                   <div class="mt-1">
                     <input
@@ -67,7 +65,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="last-name"
                     class="block text-sm font-medium text-gray-700"
-                    >Last name</label
+                    >Apellido</label
                   >
                   <div class="mt-1">
                     <input
@@ -82,25 +80,9 @@ export class StoreCheckout extends withTwind(LitElement) {
 
                 <div class="sm:col-span-2">
                   <label
-                    for="company"
-                    class="block text-sm font-medium text-gray-700"
-                    >Company</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      name="company"
-                      id="company"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div class="sm:col-span-2">
-                  <label
                     for="address"
                     class="block text-sm font-medium text-gray-700"
-                    >Address</label
+                    >Dirección</label
                   >
                   <div class="mt-1">
                     <input
@@ -117,7 +99,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="apartment"
                     class="block text-sm font-medium text-gray-700"
-                    >Apartment, suite, etc.</label
+                    >Cada/Depto/etc.</label
                   >
                   <div class="mt-1">
                     <input
@@ -133,7 +115,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="city"
                     class="block text-sm font-medium text-gray-700"
-                    >City</label
+                    >Comuna</label
                   >
                   <div class="mt-1">
                     <input
@@ -150,7 +132,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="country"
                     class="block text-sm font-medium text-gray-700"
-                    >Country</label
+                    >Ciudad</label
                   >
                   <div class="mt-1">
                     <select
@@ -159,9 +141,10 @@ export class StoreCheckout extends withTwind(LitElement) {
                       autocomplete="country-name"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
+                      <option>Selecciona</option>
+                      <option>Valparaiso</option>
+                      <option>Viña</option>
+                      <option>Santiago</option>
                     </select>
                   </div>
                 </div>
@@ -170,7 +153,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="region"
                     class="block text-sm font-medium text-gray-700"
-                    >State / Province</label
+                    >Región</label
                   >
                   <div class="mt-1">
                     <input
@@ -187,7 +170,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="postal-code"
                     class="block text-sm font-medium text-gray-700"
-                    >Postal code</label
+                    >Código postal</label
                   >
                   <div class="mt-1">
                     <input
@@ -204,7 +187,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="phone"
                     class="block text-sm font-medium text-gray-700"
-                    >Phone</label
+                    >Teléfono</label
                   >
                   <div class="mt-1">
                     <input
@@ -222,7 +205,7 @@ export class StoreCheckout extends withTwind(LitElement) {
             <div class="mt-10 border-t border-gray-200 pt-10">
               <fieldset>
                 <legend class="text-lg font-medium text-gray-900">
-                  Delivery method
+                  Forma de entrega
                 </legend>
 
                 <div
@@ -248,17 +231,17 @@ export class StoreCheckout extends withTwind(LitElement) {
                         <span
                           id="delivery-method-0-label"
                           class="block text-sm font-medium text-gray-900"
-                          >Standard</span
+                          >Estandar</span
                         >
                         <span
                           id="delivery-method-0-description-0"
                           class="mt-1 flex items-center text-sm text-gray-500"
-                          >4–10 business days</span
+                          >4–10 dáas</span
                         >
                         <span
                           id="delivery-method-0-description-1"
                           class="mt-6 text-sm font-medium text-gray-900"
-                          >$5.00</span
+                          >$0</span
                         >
                       </span>
                     </span>
@@ -310,12 +293,12 @@ export class StoreCheckout extends withTwind(LitElement) {
                         <span
                           id="delivery-method-1-description-0"
                           class="mt-1 flex items-center text-sm text-gray-500"
-                          >2–5 business days</span
+                          >2 días</span
                         >
                         <span
                           id="delivery-method-1-description-1"
                           class="mt-6 text-sm font-medium text-gray-900"
-                          >$16.00</span
+                          >$4.500</span
                         >
                       </span>
                     </span>
@@ -350,7 +333,7 @@ export class StoreCheckout extends withTwind(LitElement) {
               <h2 class="text-lg font-medium text-gray-900">Payment</h2>
 
               <fieldset class="mt-4">
-                <legend class="sr-only">Payment type</legend>
+                <legend class="sr-only">Forma de pago</legend>
                 <div
                   class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0"
                 >
@@ -365,7 +348,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                     <label
                       for="credit-card"
                       class="ml-3 block text-sm font-medium text-gray-700"
-                      >Credit card</label
+                      >Tarjeta de crédito</label
                     >
                   </div>
 
@@ -393,7 +376,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                     <label
                       for="etransfer"
                       class="ml-3 block text-sm font-medium text-gray-700"
-                      >eTransfer</label
+                      >Transferencia</label
                     >
                   </div>
                 </div>
@@ -404,7 +387,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="card-number"
                     class="block text-sm font-medium text-gray-700"
-                    >Card number</label
+                    >Número de tarjeta</label
                   >
                   <div class="mt-1">
                     <input
@@ -421,7 +404,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="name-on-card"
                     class="block text-sm font-medium text-gray-700"
-                    >Name on card</label
+                    >Nombre</label
                   >
                   <div class="mt-1">
                     <input
@@ -438,7 +421,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="expiration-date"
                     class="block text-sm font-medium text-gray-700"
-                    >Expiration date (MM/YY)</label
+                    >Expiración (MM/YY)</label
                   >
                   <div class="mt-1">
                     <input
@@ -473,7 +456,9 @@ export class StoreCheckout extends withTwind(LitElement) {
 
           <!-- Order summary -->
           <div class="mt-10 lg:mt-0">
-            <h2 class="text-lg font-medium text-gray-900">Order summary</h2>
+            <h2 class="text-lg font-medium text-gray-900">
+              Resumen del pedido
+            </h2>
 
             <div
               class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm"
@@ -496,10 +481,10 @@ export class StoreCheckout extends withTwind(LitElement) {
                           <a
                             href="#"
                             class="font-medium text-gray-700 hover:text-gray-800"
-                            >Basic Tee</a
+                            >Polera negra hombre</a
                           >
                         </h4>
-                        <p class="mt-1 text-sm text-gray-500">Black</p>
+                        <p class="mt-1 text-sm text-gray-500">Negra</p>
                         <p class="mt-1 text-sm text-gray-500">Large</p>
                       </div>
 
@@ -527,7 +512,7 @@ export class StoreCheckout extends withTwind(LitElement) {
 
                     <div class="flex flex-1 items-end justify-between pt-2">
                       <p class="mt-1 text-sm font-medium text-gray-900">
-                        $32.00
+                        $24.450
                       </p>
 
                       <div class="ml-4">
@@ -556,21 +541,21 @@ export class StoreCheckout extends withTwind(LitElement) {
               <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
                 <div class="flex items-center justify-between">
                   <dt class="text-sm">Subtotal</dt>
-                  <dd class="text-sm font-medium text-gray-900">$64.00</dd>
+                  <dd class="text-sm font-medium text-gray-900">$24.450</dd>
                 </div>
                 <div class="flex items-center justify-between">
-                  <dt class="text-sm">Shipping</dt>
-                  <dd class="text-sm font-medium text-gray-900">$5.00</dd>
+                  <dt class="text-sm">Costo de envío</dt>
+                  <dd class="text-sm font-medium text-gray-900">$0</dd>
                 </div>
                 <div class="flex items-center justify-between">
-                  <dt class="text-sm">Taxes</dt>
-                  <dd class="text-sm font-medium text-gray-900">$5.52</dd>
+                  <dt class="text-sm">IVA</dt>
+                  <dd class="text-sm font-medium text-gray-900">$10.000</dd>
                 </div>
                 <div
                   class="flex items-center justify-between border-t border-gray-200 pt-6"
                 >
                   <dt class="text-base font-medium">Total</dt>
-                  <dd class="text-base font-medium text-gray-900">$75.52</dd>
+                  <dd class="text-base font-medium text-gray-900">$34.450</dd>
                 </div>
               </dl>
 
@@ -579,7 +564,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                   type="submit"
                   class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
-                  Confirm order
+                  Confirmar pedido
                 </button>
               </div>
             </div>

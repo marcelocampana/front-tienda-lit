@@ -5,28 +5,29 @@ import config from "../../twind.config.js";
 import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
-
-import CryptoJS from "crypto-js";
-const key = "mi clave secreta";
-
 export class StoreLogin extends withTwind(LitElement) {
+  constructor() {
+    super();
+    this.token = localStorage.getItem("authToken");
+  }
   async handleSubmit(e) {
     e.preventDefault();
+
     const user = {
       email: e.target.email.value,
-      password: CryptoJS.AES.encrypt(e.target.password.value, key).toString(),
+      password: e.target.password.value,
     };
-    const apiManager = new ApiManager("http://localhost:4000/api/auth");
-    const result = await apiManager.verifyUser(user);
-    console.log(result);
+    const apiManager = new ApiManager("/api/auth/token");
+    await apiManager.verifyUser(user);
+    window.location.href = window.location.pathname;
   }
   render() {
-    return html` <div class="h-full bg-gray-900">
+    return html` <div class="h-screen bg-gray-900">
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
-            class="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+            class="mx-auto w-auto hidden"
+            src="images/logo-tienda.png"
             alt="Your Company"
           />
           <h2
@@ -42,7 +43,7 @@ export class StoreLogin extends withTwind(LitElement) {
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-white"
-                >Email address</label
+                >Email</label
               >
               <div class="mt-2">
                 <input
@@ -61,12 +62,12 @@ export class StoreLogin extends withTwind(LitElement) {
                 <label
                   for="password"
                   class="block text-sm font-medium leading-6 text-white"
-                  >Password</label
+                  >Contraseña</label
                 >
                 <div class="text-sm">
                   <a
-                    href="#"
-                    class="font-semibold text-indigo-400 hover:text-indigo-300"
+                    href="/signin"
+                    class="hidden font-semibold text-indigo-400 hover:text-indigo-300"
                     >Forgot password?</a
                   >
                 </div>
@@ -94,11 +95,11 @@ export class StoreLogin extends withTwind(LitElement) {
           </form>
 
           <p class="mt-10 text-center text-sm text-gray-400">
-            Not a member?
+            No tienes cuenta?
             <a
-              href="#"
+              href="/signin"
               class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300"
-              >Start a 14 day free trial</a
+              >Crea una aquí</a
             >
           </p>
         </div>
