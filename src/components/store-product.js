@@ -43,7 +43,7 @@ export class StoreProduct extends withTwind(LitElement) {
   } */
 
   render() {
-    return html` <div class="grid grid-cols-3 gap-3">
+    return html` <div class="grid grid-cols-4 gap-3">
       ${this.data &&
       this.data.map(
         (item) =>
