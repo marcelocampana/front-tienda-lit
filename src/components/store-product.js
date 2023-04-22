@@ -10,11 +10,11 @@ export class StoreProduct extends withTwind(LitElement) {
     data: [],
   };
 
-  constructor() {
+  /*   constructor() {
     super();
     this.totalProductInCart = JSON.parse(localStorage.getItem("cart"));
     this.cart = new Set([...this.totalProductInCart]);
-  }
+  } */
 
   async fetchData() {
     try {
