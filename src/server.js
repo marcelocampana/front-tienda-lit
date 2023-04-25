@@ -5,7 +5,7 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import { config } from "../webpack.config.js";
-//import { validateToken } from "./controllers/auth.js";
+import { validateToken } from "./controllers/validateToken.js";
 
 const app = express();
 const compiler = webpack(config);
@@ -44,6 +44,8 @@ app.get("/protected", (req, res) => {
   }
 
   const validationResult = validateToken(token);
+
+  console.log(validationResult);
 
   if (!validationResult.success) {
     return res.status(403).json({ error: validationResult.error });
