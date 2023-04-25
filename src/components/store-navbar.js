@@ -6,6 +6,10 @@ import config from "../../twind.config.js";
 const withTwind = install(config);
 
 export class StoreNavbar extends withTwind(LitElement) {
+  constructor() {
+    super();
+    this.currentUserName = localStorage.getItem("currentUserName");
+  }
   render() {
     return html`<div class="bg-white">
       <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -624,7 +628,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                   <a
                     href="/login"
                     class="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >Acceder</a
+                    ><div>Acceder</div></a
                   >
                   <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
                   <a

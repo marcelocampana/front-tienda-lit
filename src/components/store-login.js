@@ -8,21 +8,32 @@ const withTwind = install(config);
 export class StoreLogin extends withTwind(LitElement) {
   constructor() {
     super();
-    this.token = localStorage.getItem("authToken");
+    this.currentUser = [];
   }
-  async handleSubmit(e) {
+
+  async handleLogin(e) {
     e.preventDefault();
 
-    const user = {
+    const loginDataForm = {
       email: e.target.email.value,
       password: e.target.password.value,
     };
-    const apiManager = new ApiManager("/api/auth/token");
-    await apiManager.verifyUser(user);
-    window.location.href = window.location.pathname;
+
+    const apiManager = new ApiManager("/api/v1/auth");
+    const currentUser = await apiManager.login(loginDataForm);
+
+    this.currentUser.push(currentUser);
+
+    localStorage.setItem("userToken", this.currentUser[0].token);
+    localStorage.setItem("currentUserName", this.currentUser[0].userName);
+    localStorage.setItem("currentUserEmail", this.currentUser[0].email);
+    // this.requestUpdate();
+    //window.location.href = window.location.pathname;
   }
+
   render() {
-    return html` <div class="h-screen bg-gray-900">
+    return html`<div class="h-screen bg-gray-900">
+    ${this.currentUser[0] && this.currentUser[0].email}
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -33,12 +44,12 @@ export class StoreLogin extends withTwind(LitElement) {
           <h2
             class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white"
           >
-            Acceder
+          Acceder
           </h2>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" @submit=${this.handleSubmit}>
+          <form class="space-y-6" @submit=${this.handleLogin}>
             <div>
               <label
                 for="email"

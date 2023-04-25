@@ -1,6 +1,4 @@
 import { LitElement, html } from "lit";
-import CryptoJS from "crypto-js";
-import jwt from "jsonwebtoken-promisified";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
@@ -8,27 +6,29 @@ import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 export class StoreSignin extends withTwind(LitElement) {
+  constructor() {
+    super();
+    this.currentUser = [];
+  }
+
   async handleSubmit(e) {
     e.preventDefault();
-    console.log(process.env.PASSWORD_KEY);
-    const payload = { id: 123 };
-    const secretKey = process.env.SECRET_KEY;
-    const token = await jwt.sign(payload, secretKey);
 
-    const encryptedPassword = CryptoJS.AES.encrypt(
-      e.target.password.value,
-      process.env.PASSWORD_KEY
-    ).toString();
-
-    console.log(encryptedPassword);
-    const user = {
+    const newUser = {
+      name: e.target.fullName.value,
       email: e.target.email.value,
-      password: encryptedPassword,
+      password: e.target.password.value,
     };
-    const apiManager = new ApiManager("/api/auth");
-    const result = await apiManager.addData(user);
-    console.log(token, "--", result, process.env.PASSWORD_KEY);
+    const apiManager = new ApiManager("/api/v1/auth/new-user");
+    const currentUser = await apiManager.addData(newUser);
+
+    this.currentUser.push(currentUser);
+
+    localStorage.setItem("userToken", this.currentUser[0].token);
+    localStorage.setItem("currentUserName", this.currentUser[0].userName);
+    localStorage.setItem("currentUserEmail", this.currentUser[0].email);
   }
+
   render() {
     return html` <div class="h-screen bg-gray-900">
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -47,6 +47,22 @@ export class StoreSignin extends withTwind(LitElement) {
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form class="space-y-6" @submit=${this.handleSubmit}>
+           <div>
+              <label
+                for="fullName"
+                class="block text-sm font-medium leading-6 text-white"
+                >Nombre</label
+              >
+              <div class="mt-2">
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  required
+                  class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
             <div>
               <label
                 for="email"

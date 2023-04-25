@@ -4,9 +4,8 @@ import { fileURLToPath } from "url";
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
-import { config } from "./webpack.config.js";
-//import rolesVerification from "./src/lib/rolesVerification.js";
-import { validateJWT } from "./src/lib/validateJWT.js";
+import { config } from "../webpack.config.js";
+//import { validateToken } from "./controllers/auth.js";
 
 const app = express();
 const compiler = webpack(config);
@@ -36,7 +35,7 @@ app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {
   res.sendFile(__dirname + "/public/dashboard.html");
 });
 
-/* app.get("/protected", (req, res) => {
+app.get("/protected", (req, res) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -44,8 +43,8 @@ app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {
     return res.status(401).json({ error: "Token no proporcionado" });
   }
 
-  const validationResult = validateJWT(token);
-  console.log(validationResult);
+  const validationResult = validateToken(token);
+
   if (!validationResult.success) {
     return res.status(403).json({ error: validationResult.error });
   }
@@ -53,7 +52,7 @@ app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {
   // Si la validación es exitosa, procede con la lógica de tu aplicación
   res.json({ message: "Acceso permitido", payload: validationResult.payload });
 });
- */
+
 app.use(webpackHotMiddleware(compiler));
 
 const PORT = process.env.PORT || 3000;

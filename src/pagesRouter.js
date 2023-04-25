@@ -7,7 +7,6 @@ import "./pages/signin-page.js";
 import "./pages/login-page.js";
 import "./pages/dashboard/product-add.js";
 import "./pages/dashboard/product-list.js";
-import jwt from "jsonwebtoken-promisified";
 
 class RouterComponent extends LitElement {
   static properties() {

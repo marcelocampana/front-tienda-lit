@@ -20,7 +20,6 @@ export class AdminNewProduct extends withTwind(LitElement) {
     const apiManager = new ApiManager("/api/v1/products/");
     const result = apiManager.addData(postData);
     await result;
-    console.log(result);
   }
 
   handleSubmit(e) {
