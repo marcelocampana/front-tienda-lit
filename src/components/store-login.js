@@ -28,7 +28,7 @@ export class StoreLogin extends withTwind(LitElement) {
     localStorage.setItem("currentUserName", this.currentUser[0].userName);
     localStorage.setItem("currentUserEmail", this.currentUser[0].email);
     // this.requestUpdate();
-    //window.location.href = window.location.pathname;
+    window.location.href = window.location.pathname;
   }
 
   render() {

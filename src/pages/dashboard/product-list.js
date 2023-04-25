@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import "../../components/admin-sidebar.js";
-import "../../components/admin-table.js";
+import "../../components/admin-product-list.js";
 
 export class ProductList extends LitElement {
   render() {

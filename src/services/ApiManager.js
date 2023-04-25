@@ -5,7 +5,6 @@ export class ApiManager {
   async getData() {
     try {
       const response = await fetch(this.apiUrl);
-      console.log(response);
       if (response.ok) {
         const data = await response.json();
         return data;

@@ -13,6 +13,7 @@
     "@twind/preset-typography": "^1.0.7",
     "@twind/with-web-components": "^1.1.3",
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
     "jsonwebtoken": "^9.0.0",
     "lit": "^2.7.2"

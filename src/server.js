@@ -7,7 +7,34 @@ import webpackHotMiddleware from "webpack-hot-middleware";
 import { config } from "../webpack.config.js";
 import { validateToken } from "./controllers/validateToken.js";
 
+//import { getJWTHeaders } from "./controllers/getJWTHeaders.js";
+
 const app = express();
+
+export const getJWTHeaders = async (req, res) => {
+  const token = req.query.token;
+
+  if (!token) {
+    return res.status(401).json({ error: "Token no proporcionado" });
+  }
+  const validationResult = validateToken(token);
+
+  if (!validationResult.success) {
+    return res.status(403).json({ error: validationResult.error });
+  }
+
+  console.log({
+    message: "Acceso permitido",
+    payload: validationResult.payload,
+  });
+
+  if (validationResult.payload.roleName === "admin") {
+    res.sendFile(__dirname + "/public/dashboard.html");
+  } else {
+    res.status(403).send("Acceso no autorizado");
+  }
+};
+
 const compiler = webpack(config);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +45,8 @@ app.use(
     publicPath: config.output.publicPath,
   })
 );
+
+app.use(express.json());
 
 app.get(["/", "/cart", "/login", "/signin"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
@@ -31,29 +60,14 @@ app.get(
   }
 );
 
-app.get(["/dashboard/product-add", "/dashboard/product-list"], (req, res) => {
-  res.sendFile(__dirname + "/public/dashboard.html");
-});
-
-app.get("/protected", (req, res) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ error: "Token no proporcionado" });
-  }
-
-  const validationResult = validateToken(token);
-
-  console.log(validationResult);
-
-  if (!validationResult.success) {
-    return res.status(403).json({ error: validationResult.error });
-  }
-
-  // Si la validación es exitosa, procede con la lógica de tu aplicación
-  res.json({ message: "Acceso permitido", payload: validationResult.payload });
-});
+app.get(
+  [
+    "/dashboard/product-add",
+    "/dashboard/product-list",
+    "/dashboard/product-update?:id",
+  ],
+  getJWTHeaders
+);
 
 app.use(webpackHotMiddleware(compiler));
 
