@@ -13,9 +13,14 @@ export class AdminProductUpdate extends withTwind(LitElement) {
     dataProduct: "",
   };
 
+  constructor() {
+    super();
+    this.id = new URLSearchParams(window.location.search).get("id");
+  }
+
   async getProduct() {
     const apiManager = new ApiManager("/api/v1/products/");
-    this.dataProduct = await apiManager.getData(1);
+    this.dataProduct = await apiManager.getData(this.id);
   }
 
   async getApiData() {
@@ -23,23 +28,25 @@ export class AdminProductUpdate extends withTwind(LitElement) {
     this.data = await apiManager.getAllData();
   }
 
-  async addApiData(postData) {
+  async updateApiData(id, postData) {
     const apiManager = new ApiManager("/api/v1/products/");
-    const result = apiManager.addData(postData);
+    const result = apiManager.updateData(id, postData);
     await result;
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const postData = {
+      product_id: this.id,
       name: e.target.name.value,
       description: e.target.description.value,
       image_url: "http", //e.target.imageUrl.value,
       sku: e.target.sku.value,
       price: e.target.price.value,
       category_id: e.target.category.value,
+      stock: e.target.stock.value,
     };
-    this.addApiData(postData);
+    this.updateApiData(postData.product_id, postData);
   }
 
   connectedCallback() {
@@ -49,7 +56,6 @@ export class AdminProductUpdate extends withTwind(LitElement) {
   }
 
   render() {
-    console.log(this.dataProduct);
     return html`
       <form @submit=${this.handleSubmit}>
    
@@ -75,7 +81,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     type="text"
                     name="name"
                     autocomplete="given-name"
-                    value= ${this.dataProduct.name}
+                    value= ${this.dataProduct && this.dataProduct.name}
                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -92,7 +98,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     <input
                       type="text"
                       name="sku"
-                      value=${this.dataProduct.sku}
+                      value=${this.dataProduct && this.dataProduct.sku}
                       autocomplete="family-name"
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -112,7 +118,9 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                       rows="3"
                   
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    >${this.dataProduct.description}</textarea>
+                    >${
+                      this.dataProduct && this.dataProduct.description
+                    }</textarea>
                   </div>
                 </div>
 
@@ -172,7 +180,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                 <input
                   name="price"
                   type="number"
-                  value=${this.dataProduct.price}
+                  value=${this.dataProduct && this.dataProduct.price}
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -203,7 +211,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
        
                 </select>
               </div>
-               <div class="sm:col-span-4">
+               <div class="sm:col-span-4 mt-5">
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-gray-900"
@@ -213,7 +221,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                 <input
                   name="stock"
                   type="number"
-                  value=${this.dataProduct.stock}
+                  value=${this.dataProduct && this.dataProduct.stock}
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -227,7 +235,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
           type="submit"
             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Guardar
+            Modificar
           </button>
         </div>
       </form>

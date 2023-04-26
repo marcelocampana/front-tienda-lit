@@ -6,33 +6,24 @@ import config from "../../twind.config.js";
 const withTwind = install(config);
 
 export class AdminSidebar extends withTwind(LitElement) {
+  static get properties() {
+    return {
+      token: { type: String },
+    };
+  }
+
+  constructor() {
+    super();
+    this.token = localStorage.getItem("authToken");
+  }
+
   render() {
     return html` <div>
       <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-900/80"></div>
 
         <div class="fixed inset-0 flex">
-          <!--
-        Off-canvas menu, show/hide based on off-canvas menu state.
-
-        Entering: "transition ease-in-out duration-300 transform"
-          From: "-translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transition ease-in-out duration-300 transform"
-          From: "translate-x-0"
-          To: "-translate-x-full"
-      -->
           <div class="relative mr-16 flex w-full max-w-xs flex-1">
-            <!--
-          Close button, show/hide based on off-canvas menu state.
-
-          Entering: "ease-in-out duration-300"
-            From: "opacity-0"
-            To: "opacity-100"
-          Leaving: "ease-in-out duration-300"
-            From: "opacity-100"
-            To: "opacity-0"
-        -->
             <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
               <button type="button" class="-m-2.5 p-2.5">
                 <span class="sr-only">Close sidebar</span>
@@ -52,8 +43,6 @@ export class AdminSidebar extends withTwind(LitElement) {
                 </svg>
               </button>
             </div>
-
-            <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div
               class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10"
             >
@@ -69,9 +58,8 @@ export class AdminSidebar extends withTwind(LitElement) {
                   <li>
                     <ul role="list" class="-mx-2 space-y-1">
                       <li>
-                        <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                         <a
-                          href="#"
+                          href="/dashboard/product-list?k=${this.token}"
                           class="bg-gray-800 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                         >
                           <svg
@@ -91,7 +79,7 @@ export class AdminSidebar extends withTwind(LitElement) {
                           Productos
                         </a>
                            <a
-                          href="#"
+                          href="/dashboard/product-add?k=${this.token}"
                           class="bg-gray-800 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                         >
                           <svg
@@ -146,9 +134,8 @@ export class AdminSidebar extends withTwind(LitElement) {
               <li>
                 <ul role="list" class="-mx-2 space-y-1">
                   <li>
-                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                     <a
-                      href="#"
+                      href="/dashboard/product-list?k=${this.token}"
                       class="bg-gray-800 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                     >
                       <svg
@@ -169,9 +156,8 @@ export class AdminSidebar extends withTwind(LitElement) {
                     </a>
                   </li>
                    <li>
-                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                     <a
-                      href="#"
+                      href="/dashboard/product-add?k=${this.token}"
                       class="bg-gray-800 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                     >
                       <svg

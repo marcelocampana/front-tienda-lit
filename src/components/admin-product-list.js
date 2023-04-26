@@ -19,7 +19,7 @@ export class AdminTable extends withTwind(LitElement) {
   async fetchData() {
     try {
       const apiManager = new ApiManager("/api/v1/products");
-      this.data = await apiManager.getData();
+      this.data = await apiManager.getAllData();
     } catch (error) {
       console.error("Error en la solicitud:", error);
     }
@@ -127,7 +127,7 @@ export class AdminTable extends withTwind(LitElement) {
                           class="whitespace-nowrap py-6 text-right font-medium"
                         >
                           <a
-                            href="/dashboard/product-update?id=${item.product_id}&token=${this
+                            href="/dashboard/product-update?id=${item.product_id}&k=${this
                               .token}"
                             class="text-indigo-600"
                             ><span class="hidden lg:inline">Ver</span

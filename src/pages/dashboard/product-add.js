@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import "../../components/admin-sidebar.js";
-import "../../components/admin-new-product.js";
+import "../../components/admin-product-add.js";
 
 export class ProductAdd extends LitElement {
   constructor() {
@@ -13,7 +13,7 @@ export class ProductAdd extends LitElement {
   render() {
     return html` <admin-sidebar>
       <h1>${this.page.title}</h1>
-      <admin-newproduct> </admin-newproduct>
+      <admin-product-add> </admin-product-add>
     </admin-sidebar>`;
   }
 }

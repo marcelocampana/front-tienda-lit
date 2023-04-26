@@ -12,7 +12,7 @@ import { validateToken } from "./controllers/validateToken.js";
 const app = express();
 
 export const getJWTHeaders = async (req, res) => {
-  const token = req.query.token;
+  const token = req.query.k;
 
   if (!token) {
     return res.status(401).json({ error: "Token no proporcionado" });
