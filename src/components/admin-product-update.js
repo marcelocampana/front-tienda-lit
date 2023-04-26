@@ -10,11 +10,17 @@ import { ApiManager } from "../services/ApiManager.js";
 export class AdminProductUpdate extends withTwind(LitElement) {
   static properties = {
     data: [],
+    dataProduct: "",
   };
+
+  async getProduct() {
+    const apiManager = new ApiManager("/api/v1/products/");
+    this.dataProduct = await apiManager.getData(1);
+  }
 
   async getApiData() {
     const apiManager = new ApiManager("/api/v1/categories/");
-    this.data = await apiManager.getData();
+    this.data = await apiManager.getAllData();
   }
 
   async addApiData(postData) {
@@ -39,11 +45,14 @@ export class AdminProductUpdate extends withTwind(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this.getApiData();
+    this.getProduct();
   }
 
   render() {
+    console.log(this.dataProduct);
     return html`
       <form @submit=${this.handleSubmit}>
+   
 
         <div class="space-y-12">
           <div class="pb-5">
@@ -66,7 +75,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     type="text"
                     name="name"
                     autocomplete="given-name"
-                    value= "procuto"
+                    value= ${this.dataProduct.name}
                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -83,6 +92,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     <input
                       type="text"
                       name="sku"
+                      value=${this.dataProduct.sku}
                       autocomplete="family-name"
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -100,8 +110,9 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     <textarea
                       name="description"
                       rows="3"
+                  
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    ></textarea>
+                    >${this.dataProduct.description}</textarea>
                   </div>
                 </div>
 
@@ -161,7 +172,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                 <input
                   name="price"
                   type="number"
-                  autocomplete="email"
+                  value=${this.dataProduct.price}
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -192,6 +203,21 @@ export class AdminProductUpdate extends withTwind(LitElement) {
        
                 </select>
               </div>
+               <div class="sm:col-span-4">
+              <label
+                for="email"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Stock</label
+              >
+              <div class="mt-2">
+                <input
+                  name="stock"
+                  type="number"
+                  value=${this.dataProduct.stock}
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
             </div>         
           </div>
         </div>

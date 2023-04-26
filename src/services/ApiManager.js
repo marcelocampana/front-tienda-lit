@@ -2,7 +2,22 @@ export class ApiManager {
   constructor(apiUrl) {
     this.apiUrl = `${process.env.API_HOSTNAME}${apiUrl}`;
   }
-  async getData() {
+
+  async getData(uniqueValue) {
+    try {
+      const response = await fetch(`${this.apiUrl}/${uniqueValue}`);
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error("Error al obtener datos:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  }
+
+  async getAllData() {
     try {
       const response = await fetch(this.apiUrl);
       if (response.ok) {
