@@ -51,7 +51,6 @@ export class ApiManager {
   }
 
   async updateData(id, record) {
-    console.log(id, record);
     try {
       const options = {
         method: "PUT",

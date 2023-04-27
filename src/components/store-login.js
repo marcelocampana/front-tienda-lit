@@ -9,6 +9,8 @@ export class StoreLogin extends withTwind(LitElement) {
   constructor() {
     super();
     this.currentUser = [];
+    this.href = "/dashboard/product-list";
+    this.endUserRoleHref = "/checkout";
   }
 
   async handleLogin(e) {
@@ -28,7 +30,24 @@ export class StoreLogin extends withTwind(LitElement) {
     localStorage.setItem("currentUserName", this.currentUser[0].userName);
     localStorage.setItem("currentUserEmail", this.currentUser[0].email);
     // this.requestUpdate();
-    window.location.href = window.location.pathname;
+
+    if (this.currentUser[0].roleName === "admin") {
+      const token = localStorage.getItem("authToken");
+      const headers = new Headers();
+      headers.append("Authorization", `Bearer ${token}`);
+
+      const response = await fetch(this.href, { method: "GET", headers });
+
+      if (response.ok) {
+        // Actualiza la propiedad 'route' de 'RouterComponent'
+        window.history.pushState({}, "", this.href);
+        const routerComponent = document.querySelector("router-component");
+        routerComponent.route = this.href;
+      }
+    } else {
+      window.location.href = this.endUserRoleHref;
+      //window.location.href = window.location.pathname;
+    }
   }
 
   render() {
@@ -37,8 +56,8 @@ export class StoreLogin extends withTwind(LitElement) {
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
-            class="mx-auto w-auto hidden"
-            src="images/logo-tienda.png"
+            class="mx-auto w-12"
+            src="images/logo-tienda-circle.png"
             alt="Your Company"
           />
           <h2

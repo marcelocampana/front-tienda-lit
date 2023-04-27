@@ -13,7 +13,7 @@ export class productUpdate extends LitElement {
   render() {
     return html` <admin-sidebar>
       <h1>${this.page.title}</h1>
-      <admin-product-update> </admin-product-update>
+      <admin-product-update></admin-product-update>
     </admin-sidebar>`;
   }
 }

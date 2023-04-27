@@ -5,6 +5,7 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
+import "./utils-protected-link.js";
 export class StoreFooter extends withTwind(LitElement) {
   render() {
     return html` <link
@@ -78,6 +79,10 @@ export class StoreFooter extends withTwind(LitElement) {
                 </li>
                 <li class="nav-item mb-2">
                   <a href="#" class="nav-link p-0 text-white">About</a>
+                  <protected-link
+      href="/dashboard/product-list"
+      text="Lista de productos"
+    ></protected-link>
                 </li>
               </ul>
             </div>
@@ -98,7 +103,7 @@ export class StoreFooter extends withTwind(LitElement) {
                   <a href="#" class="nav-link p-0 text-white">FAQs</a>
                 </li>
                 <li class="nav-item mb-2">
-                  <a href="#" class="nav-link p-0 text-white">About</a>
+              <
                 </li>
               </ul>
             </div>

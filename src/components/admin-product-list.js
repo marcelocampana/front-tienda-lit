@@ -11,11 +11,6 @@ export class AdminTable extends withTwind(LitElement) {
     data: [],
   };
 
-  constructor() {
-    super();
-    this.token = localStorage.getItem("authToken");
-  }
-
   async fetchData() {
     try {
       const apiManager = new ApiManager("/api/v1/products");
@@ -126,15 +121,10 @@ export class AdminTable extends withTwind(LitElement) {
                         <td
                           class="whitespace-nowrap py-6 text-right font-medium"
                         >
-                          <a
-                            href="/dashboard/product-update?id=${item.product_id}&k=${this
-                              .token}"
-                            class="text-indigo-600"
-                            ><span class="hidden lg:inline">Ver</span
-                            ><span class="sr-only"
-                              >, Machined Pen and Pencil Set</span
-                            ></a
-                          >
+                          <protected-link
+                            text="Ver"
+                            href="/dashboard/product-update?id=${item.product_id}"
+                          ></protected-link>
                         </td>
                       </tr>`
                   )}

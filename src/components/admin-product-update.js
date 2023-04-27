@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import "./utils-alert.js";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
@@ -11,11 +12,19 @@ export class AdminProductUpdate extends withTwind(LitElement) {
   static properties = {
     data: [],
     dataProduct: "",
+    showAlert: { type: Boolean },
   };
 
   constructor() {
     super();
     this.id = new URLSearchParams(window.location.search).get("id");
+    this.showAlert = false;
+  }
+
+  closeAlert() {
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 7000);
   }
 
   async getProduct() {
@@ -30,8 +39,15 @@ export class AdminProductUpdate extends withTwind(LitElement) {
 
   async updateApiData(id, postData) {
     const apiManager = new ApiManager("/api/v1/products/");
-    const result = apiManager.updateData(id, postData);
-    await result;
+    try {
+      const result = apiManager.updateData(id, postData);
+      console.log(result);
+      this.showAlert = true;
+      this.updateMessageAlert = true;
+    } catch (error) {
+      this.showAlert = true;
+      this.updateMessageAlert = false;
+    }
   }
 
   handleSubmit(e) {
@@ -61,12 +77,21 @@ export class AdminProductUpdate extends withTwind(LitElement) {
    
 
         <div class="space-y-12">
+        ${
+          this.showAlert
+            ? html`<utils-alert text="Producto actualizado"></utils-alert>`
+            : null
+        }
+          ${this.showAlert ? this.closeAlert() : null}
+       
           <div class="pb-5">
             <h2 class="text-base font-semibold leading-7 text-gray-900">
-              Productos
+             Información del producto
             </h2>
             <p class="mt-1 text-sm leading-6 text-gray-600">
-              Esta informacion será pública
+             Esta viendo el producto con ID <span class="text-black"> ${
+               this.dataProduct && this.dataProduct.product_id
+             }</span> 
             </p>
 
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -80,9 +105,9 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                   <input
                     type="text"
                     name="name"
-                    autocomplete="given-name"
                     value= ${this.dataProduct && this.dataProduct.name}
                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    required
                   />
                 </div>
               </div>
@@ -99,8 +124,8 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                       type="text"
                       name="sku"
                       value=${this.dataProduct && this.dataProduct.sku}
-                      autocomplete="family-name"
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
                     />
                   </div>
                 </div>
@@ -116,8 +141,8 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                     <textarea
                       name="description"
                       rows="3"
-                  
                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
                     >${
                       this.dataProduct && this.dataProduct.description
                     }</textarea>
@@ -197,6 +222,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                   name="category"
                   autocomplete="country-name"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  required
                 >
                 <option value="">Seleccione</option>
                ${
@@ -223,6 +249,7 @@ export class AdminProductUpdate extends withTwind(LitElement) {
                   type="number"
                   value=${this.dataProduct && this.dataProduct.stock}
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  required 
                 />
               </div>
             </div>

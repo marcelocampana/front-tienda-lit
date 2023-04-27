@@ -5,34 +5,39 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import { config } from "../webpack.config.js";
-import { validateToken } from "./controllers/validateToken.js";
-
-//import { getJWTHeaders } from "./controllers/getJWTHeaders.js";
+import jwt from "jsonwebtoken";
 
 const app = express();
 
-export const getJWTHeaders = async (req, res) => {
-  const token = req.query.k;
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
-    return res.status(401).json({ error: "Token no proporcionado" });
-  }
-  const validationResult = validateToken(token);
-
-  if (!validationResult.success) {
-    return res.status(403).json({ error: validationResult.error });
+  if (!authHeader) {
+    // return res.status(401).send({ message: "No token provided" });
+    return res.redirect("/login");
   }
 
-  console.log({
-    message: "Acceso permitido",
-    payload: validationResult.payload,
+  const parts = authHeader.split(" ");
+
+  if (parts.length !== 2) {
+    return res.status(401).send({ message: "Token error" });
+  }
+
+  const [scheme, token] = parts;
+
+  if (!/^Bearer$/i.test(scheme)) {
+    return res.status(401).send({ message: "Token malformatted" });
+  }
+
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      //return res.status(401).send({ message: "Invalid token" });
+      return res.redirect("/login");
+    }
+
+    // req.userId = decoded.id;
+    return next();
   });
-
-  if (validationResult.payload.roleName === "admin") {
-    res.sendFile(__dirname + "/public/dashboard.html");
-  } else {
-    res.status(403).send("Acceso no autorizado");
-  }
 };
 
 const compiler = webpack(config);
@@ -62,11 +67,14 @@ app.get(
 
 app.get(
   [
-    "/dashboard/product-add",
     "/dashboard/product-list",
+    "/dashboard/product-add",
     "/dashboard/product-update?:id",
   ],
-  getJWTHeaders
+  //authMiddleware,
+  (req, res) => {
+    res.sendFile(__dirname + "/public/dashboard.html");
+  }
 );
 
 app.use(webpackHotMiddleware(compiler));

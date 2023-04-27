@@ -34,8 +34,8 @@ export class StoreSignin extends withTwind(LitElement) {
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
-            class="mx-auto w-auto hidden"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+            class="mx-auto w-12"
+            src="/images/logo-tienda-circle.png"
             alt="Your Company"
           />
           <h2
