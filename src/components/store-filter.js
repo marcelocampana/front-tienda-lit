@@ -765,7 +765,7 @@ export class StoreFilter extends withTwind(LitElement) {
             </aside>
 
             <!-- Product grid -->
-          <div class="col-span-3"> 
+          <div class="md:col-span-2 xl:col-span-3" > 
             <slot></slot>
             </div>
             </div>

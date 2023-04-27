@@ -138,10 +138,9 @@ export class AdminTable extends withTwind(LitElement) {
                             }" >
                               </protected-link>
                               <div class="mt-1 sm:hidden">
-                                ${item.price.toLocaleString(
-                                  "es-CL",
-                                  this.options
-                                )}
+                                $${item.price
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                               </div>
                             </div>
                           </div>
