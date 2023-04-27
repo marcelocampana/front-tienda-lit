@@ -69,6 +69,24 @@ export class ApiManager {
     }
   }
 
+  async deleteData(id) {
+    try {
+      const options = {
+        method: "DELETE",
+        headers: { "Content-type": "application/json;charset=UTF-8" },
+      };
+      const response = await fetch(`${this.apiUrl}${id}`, options);
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error("Error al eliminar datos:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  }
+
   async login(userData) {
     try {
       const options = {

@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
@@ -10,6 +11,7 @@ class ProtectedLink extends withTwind(LitElement) {
       href: { type: String },
       text: { type: String },
       class: { type: String },
+      svgCode: { type: String },
     };
   }
 
@@ -18,6 +20,7 @@ class ProtectedLink extends withTwind(LitElement) {
     this.href = "";
     this.text = "";
     this.class = "";
+    this.svgCode = "";
   }
 
   async handleClick(e) {
@@ -47,7 +50,7 @@ class ProtectedLink extends withTwind(LitElement) {
     return html`
       <slot></slot>
       <a href="${this.href}" @click="${this.handleClick}" class="${this.class}">
-        ${this.text}
+        ${this.svgCode ? unsafeSVG(this.svgCode) : this.text}
       </a>
     `;
   }

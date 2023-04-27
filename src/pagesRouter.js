@@ -25,8 +25,6 @@ class RouterComponent extends LitElement {
   constructor() {
     super();
     this.route = window.location.pathname;
-    this.id = new URL(window.location.href).pathname.split("/").pop();
-    console.log(this.id);
 
     window.addEventListener("popstate", () => {
       this.route = window.location.pathname;
@@ -35,7 +33,6 @@ class RouterComponent extends LitElement {
   }
 
   render() {
-    console.log("t", this.route);
     switch (this.route) {
       case "/":
         return html`<home-page></home-page>`;
@@ -50,7 +47,6 @@ class RouterComponent extends LitElement {
       case "/orders":
         html`<orders-page></orders-page>`;
       case "/dashboard/product-add":
-        console.log("add");
         return html`<product-add></product-add>`;
       case "/dashboard/product-list":
         return html`<product-list></product-list>`;

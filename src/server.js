@@ -71,9 +71,18 @@ app.get(
     "/dashboard/product-add",
     "/dashboard/product-update?:id",
   ],
-  //authMiddleware,
+  authMiddleware,
   (req, res) => {
     res.sendFile(__dirname + "/public/dashboard.html");
+  }
+);
+
+app.get(
+  "/dashboard",
+
+  authMiddleware,
+  (req, res) => {
+    res.redirect("/dashboard/product-list");
   }
 );
 
