@@ -7,13 +7,15 @@ import { ApiManager } from "../services/ApiManager.js";
 const withTwind = install(config);
 
 export class StoreProduct extends withTwind(LitElement) {
-  static properties = {
-    products: [],
-  };
+  static get properties() {
+    return { products: [], userId: { type: String } };
+  }
 
   constructor() {
     super();
-
+    this.userId = "";
+    this.productos = [];
+    this.val = localStorage.getItem("authToken");
     this.itemsInCart = () => {
       const currentCart = localStorage.getItem("cart");
       const parsedCurrentCart = JSON.parse(currentCart);
@@ -26,18 +28,29 @@ export class StoreProduct extends withTwind(LitElement) {
     this.cart = this.itemsInCart();
   }
 
-  addToCart(id) {
-    localStorage.getItem("currentEndUserName") !== null
-      ? AddToCardDB(id)
-      : AddToCartLS(id);
+  async valTk() {
+    try {
+      const authData = new ApiManager("/api/v1/auth/valtk");
+      const valtk = await authData.valTk(this.val);
+      this.userId = valtk.success && valtk.payload.userId;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  AddToCardDB(id) {
-    console.log(id);
+  async addToCardDB(productId) {
+    await this.valTk();
+
+    console.log(this.userId);
+
+    // const apiManager = new ApiManager("/api/v1/shoppingCart");
+    // const getResult = await apiManager.getData(userId);
   }
 
-  AddToCartLS(id) {
-    const product = this.products.filter((item) => item.product_id === id);
+  addToCartLS(productId) {
+    const product = this.products.filter(
+      (item) => item.product_id === productId
+    );
 
     const productInCart = this.cart.find(
       (item) => item.product_id == product[0].product_id
@@ -56,6 +69,12 @@ export class StoreProduct extends withTwind(LitElement) {
     localStorage.setItem("cart", JSON.stringify([...this.cart]));
   }
 
+  addToCart(productId) {
+    localStorage.getItem("log") === "true"
+      ? this.addToCardDB(productId)
+      : this.addToCartLS(productId);
+  }
+
   async getAllProducts() {
     try {
       const apiManager = new ApiManager("/api/v1/products");
@@ -71,6 +90,7 @@ export class StoreProduct extends withTwind(LitElement) {
   }
 
   render() {
+    console.log(this.productos);
     return html` <div class="grid md:grid-cols-3 xl:md:grid-cols-4  gap-3">
       ${this.products &&
       this.products.map(

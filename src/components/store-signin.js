@@ -25,8 +25,6 @@ export class StoreSignin extends withTwind(LitElement) {
     this.currentUser.push(currentUser);
 
     localStorage.setItem("authToken", this.currentUser[0].token);
-    localStorage.setItem("currentUserName", this.currentUser[0].userName);
-    localStorage.setItem("currentUserEmail", this.currentUser[0].email);
   }
 
   render() {

@@ -1,5 +1,6 @@
 // my-component.js
 import { LitElement, html } from "lit";
+import "./components/utils-404.js";
 import "./pages/home-page.js";
 import "./pages/checkout-page.js";
 import "./pages/cart-page.js";
@@ -54,7 +55,7 @@ class RouterComponent extends LitElement {
         if (this.route.indexOf("/dashboard/product-update") !== -1) {
           return html`<product-update></product-update>`;
         } else {
-          return html`<error-page></error-page>`;
+          return html`<utils-404></utils-404>`;
         }
     }
   }

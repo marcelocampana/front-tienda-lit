@@ -32,8 +32,7 @@ export class AdminProductAdd extends withTwind(LitElement) {
   async addApiData(postData) {
     try {
       const apiManager = new ApiManager("/api/v1/products/");
-      const result = apiManager.addData(postData);
-      console.log(await result);
+      await apiManager.addData(postData);
       this.showAlert = true;
     } catch (error) {
       this.showAlert = false;

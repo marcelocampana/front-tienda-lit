@@ -41,7 +41,6 @@ export class AdminProductUpdate extends withTwind(LitElement) {
     const apiManager = new ApiManager("/api/v1/products/");
     try {
       const result = apiManager.updateData(id, postData);
-      console.log(result);
       this.showAlert = true;
       this.updateMessageAlert = true;
     } catch (error) {

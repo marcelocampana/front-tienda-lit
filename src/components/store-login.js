@@ -8,6 +8,7 @@ const withTwind = install(config);
 export class StoreLogin extends withTwind(LitElement) {
   constructor() {
     super();
+    this.userId = "";
     this.currentUser = [];
     this.href = "/dashboard/product-list";
     this.endUserRoleHref = "/checkout";
@@ -26,27 +27,67 @@ export class StoreLogin extends withTwind(LitElement) {
 
     this.currentUser.push(currentUser);
 
-    localStorage.setItem("authToken", this.currentUser[0].token);
-    localStorage.setItem("currentUserName", this.currentUser[0].userName);
-    localStorage.setItem("currentUserEmail", this.currentUser[0].email);
-    // this.requestUpdate();
+    if (this.currentUser[0].token) {
+      localStorage.setItem("authToken", this.currentUser[0].token);
 
-    if (this.currentUser[0].roleName === "admin") {
       const token = localStorage.getItem("authToken");
       const headers = new Headers();
       headers.append("Authorization", `Bearer ${token}`);
 
       const response = await fetch(this.href, { method: "GET", headers });
-
       if (response.ok) {
-        // Actualiza la propiedad 'route' de 'RouterComponent'
-        window.history.pushState({}, "", this.href);
         const routerComponent = document.querySelector("router-component");
-        routerComponent.route = this.href;
+        if (this.currentUser[0].roleName === "admin") {
+          window.history.pushState({}, "", this.href);
+          routerComponent.route = this.href;
+        } else {
+          this.userId = this.currentUser[0].userId;
+          await this.addLStoDBCart();
+          localStorage.setItem("log", true);
+          window.history.pushState({}, "", this.endUserRoleHref);
+          routerComponent.route = this.endUserRoleHref;
+        }
       }
-    } else {
-      window.location.href = this.endUserRoleHref;
-      //window.location.href = window.location.pathname;
+    }
+  }
+
+  async addLStoDBCart() {
+    const currentLSCart = localStorage.getItem("cart");
+    const parsedLSCurrentCart = JSON.parse(currentLSCart);
+    if (currentLSCart && parsedLSCurrentCart.length > 0) {
+      const apiManagerGet = new ApiManager(`/api/v1/shopping-carts`);
+      const checkDBCartItems = await apiManagerGet.getData(this.userId);
+      console.log("checkDBCartItems", checkDBCartItems);
+      parsedLSCurrentCart.forEach(async (element) => {
+        //  const apiManager = new ApiManager("/api/v1/shopping-carts");
+
+        const dBHasLSCartItems = checkDBCartItems.some(
+          (cartItem) => cartItem.product_id === element.product_id
+        );
+        console.log(dBHasLSCartItems);
+        if (dBHasLSCartItems) {
+          const dbProduct = checkDBCartItems.find(
+            (item) => item.product_id === element.product_id
+          );
+          const lsData = {
+            quantity: element.quantity + dbProduct.quantity,
+            product_id: element.product_id,
+            user_id: this.userId,
+          };
+          const apiManager = new ApiManager("/api/v1/shopping-carts/");
+          await apiManager.updateData(dbProduct.shopping_cart_id, lsData);
+          localStorage.removeItem("cart");
+        } else {
+          const lsData = {
+            quantity: element.quantity,
+            product_id: element.product_id,
+            user_id: this.userId,
+          };
+          const apiManager = new ApiManager("/api/v1/shopping-carts/");
+          await apiManager.addData(lsData);
+          localStorage.removeItem("cart");
+        }
+      });
     }
   }
 

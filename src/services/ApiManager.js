@@ -101,4 +101,19 @@ export class ApiManager {
       console.log(error);
     }
   }
+
+  async valTk(val) {
+    try {
+      const options = {
+        method: "POST",
+        headers: { "Content-type": "application/json;charset=UTF-8" },
+        body: JSON.stringify({ tk: val }),
+      };
+      const response = await fetch(this.apiUrl, options);
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

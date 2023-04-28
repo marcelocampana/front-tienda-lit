@@ -2,10 +2,32 @@ import { LitElement, html } from "lit";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
+import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 
 export class StoreFilter extends withTwind(LitElement) {
+  static get properties() {
+    return { categories: [], filter: [] };
+  }
+
+  async getCategoriesCount() {
+    const apiManager = new ApiManager("/api/v1/products/count");
+    this.categories = await apiManager.getData(1);
+    console.log(this.categories);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.getCategoriesCount();
+  }
+
+  async filterByCategory(categoryId) {
+    const apiManager = new ApiManager("/api/v1/products/");
+    this.filter = await apiManager.getAllData();
+    console.log(this.filter);
+  }
+
   render() {
     return html`<div class="bg-white">
       <div>
@@ -14,7 +36,7 @@ export class StoreFilter extends withTwind(LitElement) {
 
       Off-canvas menu for mobile, show/hide based on off-canvas menu state.
     -->
-        <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+        <div class="relative z-40 hidden" role="dialog" aria-modal="true">
           <!--
         Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
@@ -583,82 +605,38 @@ export class StoreFilter extends withTwind(LitElement) {
                       <legend class="block text-sm font-medium text-gray-900">
                         Categoría
                       </legend>
-                      <div class="space-y-3 pt-6">
-                        <div class="flex items-center">
-                          <input
-                            id="category-0"
-                            name="category[]"
-                            value="new-arrivals"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-0"
-                            class="ml-3 text-sm text-gray-600"
-                            >Lo mas nuevo</label
-                          >
-                        </div>
+                      <div class="space-y-3 pt-6">     
+                        ${
+                          this.categories &&
+                          this.categories.map(
+                            (item) =>
+                              html` <div class="flex items-center">
+                                <input
+                                  id="category-${item.name}"
+                                  name="category-${item.name}"
+                                  value="new-arrivals"
+                                  type="checkbox"
+                                  class="h-4
+                                w-4 rounded border-gray-300 text-indigo-600
+                                focus:ring-indigo-500"
+                                  @change="${(e) => {
+                                    if (e.target.checked) {
+                                      this.filterByCategory(item.category_id);
+                                    }
+                                  }}"
+                                />
+                                <label
+                                  for="category-${item.name}"
+                                  class="ml-3 text-sm text-gray-600"
+                                  >${item[
+                                    "category.name"
+                                  ]}(${item.total_productos})</label
+                                >
+                              </div>`
+                          )
+                        }
 
-                        <div class="flex items-center">
-                          <input
-                            id="category-1"
-                            name="category[]"
-                            value="tees"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-1"
-                            class="ml-3 text-sm text-gray-600"
-                            >Juvenil</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-2"
-                            name="category[]"
-                            value="crewnecks"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-2"
-                            class="ml-3 text-sm text-gray-600"
-                            >Casual</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-3"
-                            name="category[]"
-                            value="sweatshirts"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-3"
-                            class="ml-3 text-sm text-gray-600"
-                            >Hombre</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-4"
-                            name="category[]"
-                            value="pants-shorts"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-4"
-                            class="ml-3 text-sm text-gray-600"
-                            >Mujer</label
-                          >
-                        </div>
-                      </div>
+                       
                     </fieldset>
                   </div>
 
@@ -766,7 +744,7 @@ export class StoreFilter extends withTwind(LitElement) {
 
             <!-- Product grid -->
           <div class="md:col-span-2 xl:col-span-3" > 
-            <slot></slot>
+            <store-product productos=${this.filter}></store-product>
             </div>
             </div>
           </div>

@@ -58,12 +58,16 @@ app.get(["/", "/cart", "/login", "/signin"], (req, res) => {
 });
 
 app.get(
-  ["/", "/checkout", "/cart", "/login", "/signin", "/orders"],
+  ["/", "/cart", "/login", "/signin"],
 
   (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
   }
 );
+
+app.get(["/checkout", "/orders"], authMiddleware, (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 app.get(
   [
@@ -83,6 +87,14 @@ app.get(
   authMiddleware,
   (req, res) => {
     res.redirect("/dashboard/product-list");
+  }
+);
+
+app.get(
+  "*",
+
+  (req, res) => {
+    res.sendFile(__dirname + "/public/404.html");
   }
 );
 
