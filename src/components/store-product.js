@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-
+import { observeState } from "lit-element-state";
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
 import { ApiManager } from "../services/ApiManager.js";
@@ -8,13 +8,12 @@ const withTwind = install(config);
 
 export class StoreProduct extends withTwind(LitElement) {
   static get properties() {
-    return { products: [], userId: { type: String } };
+    return { products: { type: Array }, userId: { type: String } };
   }
 
   constructor() {
     super();
     this.userId = "";
-    this.productos = [];
     this.val = localStorage.getItem("authToken");
     this.itemsInCart = () => {
       const currentCart = localStorage.getItem("cart");
@@ -75,22 +74,11 @@ export class StoreProduct extends withTwind(LitElement) {
       : this.addToCartLS(productId);
   }
 
-  async getAllProducts() {
-    try {
-      const apiManager = new ApiManager("/api/v1/products");
-      this.products = await apiManager.getAllData();
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  }
-
   connectedCallback() {
     super.connectedCallback();
-    this.getAllProducts();
   }
 
   render() {
-    console.log(this.productos);
     return html` <div class="grid md:grid-cols-3 xl:md:grid-cols-4  gap-3">
       ${this.products &&
       this.products.map(

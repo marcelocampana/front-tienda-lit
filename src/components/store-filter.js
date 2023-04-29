@@ -1,5 +1,4 @@
 import { LitElement, html } from "lit";
-
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
 import { ApiManager } from "../services/ApiManager.js";
@@ -8,27 +7,53 @@ const withTwind = install(config);
 
 export class StoreFilter extends withTwind(LitElement) {
   static get properties() {
-    return { categories: [], filter: [] };
+    return {
+      categories: { type: Array },
+      products: { type: Array },
+      resultProducts: { type: Array },
+    };
+  }
+
+  constructor() {
+    super();
+    this.categories = [];
+    this.products = [];
+    this.resultProducts = [];
   }
 
   async getCategoriesCount() {
     const apiManager = new ApiManager("/api/v1/products/count");
     this.categories = await apiManager.getData(1);
-    console.log(this.categories);
   }
 
-  connectedCallback() {
+  async queryProducts() {
+    const apiManager = new ApiManager("/api/v1/products/");
+    const result = await apiManager.getAllData();
+    this.resultProducts = result;
+  }
+
+  async handleEvent(e) {
+    const value = e.target.value;
+    if (e.target.checked) {
+      let checkboxFilteredProducts = this.resultProducts.filter(
+        (item) => item.categoryName === value
+      );
+      this.products = [...this.products, ...checkboxFilteredProducts];
+    } else {
+      this.products = this.products.filter(
+        (item) => item.categoryName !== value
+      );
+    }
+  }
+
+  async connectedCallback() {
     super.connectedCallback();
     this.getCategoriesCount();
-  }
-
-  async filterByCategory(categoryId) {
-    const apiManager = new ApiManager("/api/v1/products/");
-    this.filter = await apiManager.getAllData();
-    console.log(this.filter);
+    await this.queryProducts();
   }
 
   render() {
+    console.log(this.resultProducts);
     return html`<div class="bg-white">
       <div>
         <!--
@@ -90,7 +115,7 @@ export class StoreFilter extends withTwind(LitElement) {
               <!-- Filters -->
               <form class="mt-4">
                 <div class="border-t border-gray-200 pt-4 pb-4">
-                  <fieldset>
+                  <fieldset class="hidden">
                     <legend class="w-full px-2">
                       <!-- Expand/collapse section button -->
                       <button
@@ -125,95 +150,7 @@ export class StoreFilter extends withTwind(LitElement) {
                     </legend>
                     <div class="px-4 pt-4 pb-2" id="filter-section-0">
                       <div class="space-y-6">
-                        <div class="flex items-center">
-                          <input
-                            id="color-0-mobile"
-                            name="color[]"
-                            value="white"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-0-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >White</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-1-mobile"
-                            name="color[]"
-                            value="beige"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-1-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Beige</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-2-mobile"
-                            name="color[]"
-                            value="blue"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-2-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Blue</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-3-mobile"
-                            name="color[]"
-                            value="brown"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-3-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Brown</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-4-mobile"
-                            name="color[]"
-                            value="green"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-4-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Green</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-5-mobile"
-                            name="color[]"
-                            value="purple"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-5-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Purple</label
-                          >
-                        </div>
+                          <!-- checkbox-->
                       </div>
                     </div>
                   </fieldset>
@@ -255,80 +192,7 @@ export class StoreFilter extends withTwind(LitElement) {
                     </legend>
                     <div class="px-4 pt-4 pb-2" id="filter-section-1">
                       <div class="space-y-6">
-                        <div class="flex items-center">
-                          <input
-                            id="category-0-mobile"
-                            name="category[]"
-                            value="new-arrivals"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-0-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >All New Arrivals</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-1-mobile"
-                            name="category[]"
-                            value="tees"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-1-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Tees</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-2-mobile"
-                            name="category[]"
-                            value="crewnecks"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-2-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Crewnecks</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-3-mobile"
-                            name="category[]"
-                            value="sweatshirts"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-3-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Sweatshirts</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="category-4-mobile"
-                            name="category[]"
-                            value="pants-shorts"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="category-4-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >Pants &amp; Shorts</label
-                          >
-                        </div>
+                             <!-- Checkbox -->
                       </div>
                     </div>
                   </fieldset>
@@ -370,95 +234,7 @@ export class StoreFilter extends withTwind(LitElement) {
                     </legend>
                     <div class="px-4 pt-4 pb-2" id="filter-section-2">
                       <div class="space-y-6">
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-0-mobile"
-                            name="sizes[]"
-                            value="xs"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-0-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >XS</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-1-mobile"
-                            name="sizes[]"
-                            value="s"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-1-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >S</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-2-mobile"
-                            name="sizes[]"
-                            value="m"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-2-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >M</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-3-mobile"
-                            name="sizes[]"
-                            value="l"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-3-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >L</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-4-mobile"
-                            name="sizes[]"
-                            value="xl"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-4-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >XL</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-5-mobile"
-                            name="sizes[]"
-                            value="2xl"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-5-mobile"
-                            class="ml-3 text-sm text-gray-500"
-                            >2XL</label
-                          >
-                        </div>
+                             <!-- checkboxs -->
                       </div>
                     </div>
                   </fieldset>
@@ -501,109 +277,11 @@ export class StoreFilter extends withTwind(LitElement) {
 
               <div class="hidden lg:block">
                 <form class="space-y-10 divide-y divide-gray-200">
-                  <div>
-                    <fieldset>
+
+                 <div class="pt-10">
+                    <fieldset id="category">
                       <legend class="block text-sm font-medium text-gray-900">
-                        Color
-                      </legend>
-                      <div class="space-y-3 pt-6">
-                        <div class="flex items-center">
-                          <input
-                            id="color-0"
-                            name="color[]"
-                            value="white"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-0"
-                            class="ml-3 text-sm text-gray-600"
-                            >Blanco</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-1"
-                            name="color[]"
-                            value="beige"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-1"
-                            class="ml-3 text-sm text-gray-600"
-                            >Beige</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-2"
-                            name="color[]"
-                            value="blue"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-2"
-                            class="ml-3 text-sm text-gray-600"
-                            >Azul</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-3"
-                            name="color[]"
-                            value="brown"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-3"
-                            class="ml-3 text-sm text-gray-600"
-                            >Café</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-4"
-                            name="color[]"
-                            value="green"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-4"
-                            class="ml-3 text-sm text-gray-600"
-                            >Verde</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="color-5"
-                            name="color[]"
-                            value="purple"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="color-5"
-                            class="ml-3 text-sm text-gray-600"
-                            >Rosado</label
-                          >
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
-
-                  <div class="pt-10">
-                    <fieldset>
-                      <legend class="block text-sm font-medium text-gray-900">
-                        Categoría
+                        Categorías
                       </legend>
                       <div class="space-y-3 pt-6">     
                         ${
@@ -614,16 +292,12 @@ export class StoreFilter extends withTwind(LitElement) {
                                 <input
                                   id="category-${item.name}"
                                   name="category-${item.name}"
-                                  value="new-arrivals"
+                                  value=${item["category.name"]}
                                   type="checkbox"
                                   class="h-4
                                 w-4 rounded border-gray-300 text-indigo-600
                                 focus:ring-indigo-500"
-                                  @change="${(e) => {
-                                    if (e.target.checked) {
-                                      this.filterByCategory(item.category_id);
-                                    }
-                                  }}"
+                                  @change=${this.handleEvent}
                                 />
                                 <label
                                   for="category-${item.name}"
@@ -636,105 +310,31 @@ export class StoreFilter extends withTwind(LitElement) {
                           )
                         }
 
+
                        
                     </fieldset>
                   </div>
 
-                  <div class="pt-10">
+                  <div class="hidden">
                     <fieldset>
+                      <legend class="block text-sm font-medium text-gray-900">
+                        Color
+                      </legend>
+                      <div class="space-y-3 pt-6">
+                                <!-- checkbox -->
+                      </div>
+                    </fieldset>
+                  </div>
+
+                 
+
+                  <div class="pt-10">
+                    <fieldset class="hidden">
                       <legend class="block text-sm font-medium text-gray-900">
                         Tallas
                       </legend>
                       <div class="space-y-3 pt-6">
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-0"
-                            name="sizes[]"
-                            value="xs"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-0"
-                            class="ml-3 text-sm text-gray-600"
-                            >XS</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-1"
-                            name="sizes[]"
-                            value="s"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-1"
-                            class="ml-3 text-sm text-gray-600"
-                            >S</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-2"
-                            name="sizes[]"
-                            value="m"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-2"
-                            class="ml-3 text-sm text-gray-600"
-                            >M</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-3"
-                            name="sizes[]"
-                            value="l"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-3"
-                            class="ml-3 text-sm text-gray-600"
-                            >L</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-4"
-                            name="sizes[]"
-                            value="xl"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-4"
-                            class="ml-3 text-sm text-gray-600"
-                            >XL</label
-                          >
-                        </div>
-
-                        <div class="flex items-center">
-                          <input
-                            id="sizes-5"
-                            name="sizes[]"
-                            value="2xl"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <label
-                            for="sizes-5"
-                            class="ml-3 text-sm text-gray-600"
-                            >2XL</label
-                          >
-                        </div>
+                               <!-- Checkbox-->
                       </div>
                     </fieldset>
                   </div>
@@ -744,7 +344,9 @@ export class StoreFilter extends withTwind(LitElement) {
 
             <!-- Product grid -->
           <div class="md:col-span-2 xl:col-span-3" > 
-            <store-product productos=${this.filter}></store-product>
+   <store-product .products="${
+     this.products.length === 0 ? this.resultProducts : this.products
+   }"></store-product>      
             </div>
             </div>
           </div>

@@ -16,10 +16,12 @@
     "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
     "jsonwebtoken": "^9.0.0",
-    "lit": "^2.7.2"
+    "lit": "^2.7.2",
+    "lit-element-state": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
     "@babel/preset-env": "^7.21.4",
     "autoprefixer": "^10.4.14",
     "babel-loader": "^9.1.2",
