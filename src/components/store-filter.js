@@ -53,7 +53,6 @@ export class StoreFilter extends withTwind(LitElement) {
   }
 
   render() {
-    console.log(this.resultProducts);
     return html`<div class="bg-white">
       <div>
         <!--
