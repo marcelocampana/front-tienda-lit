@@ -1,13 +1,66 @@
-Tienda Bootcamp ♥️
+# Proyecto Tienda Online Bootcamp ❤️
 
-Welcome to your shiny new Codespace running Express! We've got everything fired up and running for you to explore Express.
+Autor: Marcelo Campaña - Bootcamp Javascript FullStack Trainee
 
-You've got a blank canvas to work on from a git perspective as well. There's a single initial commit with the what you're seeing right now - where you go from here is up to you!
+## Descripción del proyecto y funcionamiento general del aplicativo
 
-Everything you do here is contained within this one codespace. There is no repository on GitHub yet. If and when you’re ready you can click "Publish Branch" and we’ll create your repository and push up your project. If you were just exploring then and have no further need for this code then you can simply delete your codespace and it's gone forever.
+El proyecto tiene como objetivo crear un prototipo de una tienda en línea para la venta de productos. Está altamente orientado al desarrollo con web components y programación orientada a objetos. Las funcionalidades principales incluyen:
 
-To run this application:
+- Catálogo de productos con filtrado por categorías.
+- Envío de productos al carrito con carga al localStorage para usuarios sin una sesión activa y carga a la base de datos para usuarios con cuenta registrada y sesión activa.
+- Página de acceso único para cuentas de usuario final y administrador, la cual redirecciona al sitio web o mantenedor respectivamente.
+- Validación de acceso y perfil a través de JWT.
+- Mantenedor (CRUD) para la administración de productos de la tienda.
+- Código minificado con webpack para mejorar la velocidad de carga y seguridad del aplicativo front.
+- API rest para el servicio de datos.
+- Uso de variables de entorno para el manejo de datos sensibles.
 
-```
+## Instalación
+
+En cada proyecto:
+
+```bash
+npm i
 npm start
 ```
+
+### Requerimientos de la rúbrica
+
+#### Consulta Base de Datos
+
+- Seleccionar las columnas requeridas para presentar la información (api-tienda-lit/src/models/product.js, api-tienda-lit/src/models/shoppingCart.js, api-tienda-lit/src/models/user.js).
+- Utilizar join para seleccionar la información de las distintas tablas (api-tienda-lit/src/models/product.js, api-tienda-lit/src/models/user.js).
+- Utilizar cláusulas de ordenamiento para presentar la información (api-tienda-lit/src/models/product.js).
+- Utilizar cláusulas de agrupación (api-tienda-lit/src/models/product.js).
+- Utilizar where para filtrar la información requerida (api-tienda-lit/src/models/user.js).
+
+#### Algoritmos de cálculo y manipulación de archivos de texto
+
+- Utilización general del lenguaje, selección de tipos de datos (front-tienda-lit/src/services/ApiManager.js, front-tienda-lit/src/components/store-login.js).
+- Utilización de sentencias repetitivas (front-tienda-lit/src/components/admin-product-list.js, front-tienda-lit/src/components/store-product.js).
+- Convenciones y estilos de programación (ambos proyectos en general incluyen módulos, componentes, programación orientada a objetos, encapsulación).
+- Utilización correcta de la estructura de datos (ambos proyectos tienen una estructura de directorios acorde a las buenas prácticas, separando los módulos y/o piezas de código en conjuntos de acuerdo al servicio que prestan).
+- Manipulación de archivos (escritura en archivo txt del log de conexiones de usuarios: api-tienda-lit/src/controllers/log/connections.txt, api-tienda-lit/src/controllers/auth.js).
+
+#### Página web y HTML
+
+- Utilización de tags HTML, estilos y responsividad (todo el directorio front-tienda-lit/src/components).
+- Utilización de Bootstrap (front-tienda-lit/src/components/utils-404.js, front-tienda-lit/src/components/store-carrousel.js).
+- Inclusión de paquetes y librerías de usuario (archivo package.json de ambos proyectos).
+- Agrupación del código y separación por funcionalidad (api-tienda-lit/src/models, api-tienda-lit/src/controllers, src/components).
+- Utilización de funciones asíncronas (front-tienda-lit/src/services/ApiManager.js, api-tienda-lit/src/controllers/auth.js).
+- Lectura de parámetros de entrada (api-tienda-lit/src/controllers/users.js, api-tienda-lit/src/utils).
+
+#### Conexión a base de datos
+
+- Manejo de conexión a base de datos desde Node (api-tienda-lit/src/services/db_connection.js, api-tienda-lit/src/models/).
+- Manejo y ejecución de consultas desde Node (api-tienda-lit/src/models/product.js, api-tienda-lit/src/models/user.js).
+
+#### Uso de Express
+
+- Creación de servicio REST con Express (api-tienda-lit/src/routes, api-tienda-lit/src/server.js).
+
+## Enlaces a repositorios
+
+- [Front tienda](https://github.com/marcelocampana/front-tienda-lit)
+- [API Tienda](https://github.com/marcelocampana/api-tienda-lit)

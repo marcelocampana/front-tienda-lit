@@ -1,5 +1,4 @@
 import { LitElement, html } from "lit";
-import { observeState } from "lit-element-state";
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
 import { ApiManager } from "../services/ApiManager.js";
