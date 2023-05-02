@@ -32,6 +32,9 @@ export class StoreNavbar extends withTwind(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this.countCartItems();
+    window.addEventListener("cart-updated", () => {
+      this.countCartItems();
+    });
   }
 
   render() {

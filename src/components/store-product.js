@@ -42,6 +42,8 @@ export class StoreProduct extends withTwind(LitElement) {
     this.productAdded = this.cart.filter(
       (item) => item.product_id === productId
     );
+
+    window.dispatchEvent(new CustomEvent("cart-updated"));
     this.showNotification = true;
   }
 
