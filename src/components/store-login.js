@@ -112,6 +112,7 @@ export class StoreLogin extends withTwind(LitElement) {
   }
 
   render() {
+    console.log(window.location.pathname);
     return html`<div class="h-screen bg-gray-900">
       ${this.currentUser[0] && this.currentUser[0].email}
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

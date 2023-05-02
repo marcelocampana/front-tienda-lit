@@ -40,7 +40,6 @@ export class StoreNavbar extends withTwind(LitElement) {
       try {
         const apiManager = new ApiManager("/api/v1/auth/valtk");
         const result = await apiManager.valTk(tk);
-        console.log(result);
 
         if (result.success) {
           this.username = result.payload.nombre;
