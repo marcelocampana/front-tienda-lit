@@ -5,17 +5,22 @@ import config from "../../twind.config.js";
 
 const withTwind = install(config);
 
+import { ApiManager } from "../services/ApiManager.js";
+
 export class StoreNavbar extends withTwind(LitElement) {
   static get properties() {
     return {
       cartItems: { type: Array },
       totalCountCartItems: { type: Number },
+      username: { type: String },
+      userId: { type: String },
     };
   }
 
   constructor() {
     super();
-    this.currentUserName = localStorage.getItem("currentUserName");
+    this.username = "";
+    this.userId = "";
   }
 
   countCartItems() {
@@ -29,15 +34,41 @@ export class StoreNavbar extends withTwind(LitElement) {
     this.totalCountCartItems = totalCartItems;
   }
 
+  async valTk() {
+    const tk = localStorage.getItem("authToken");
+    if (tk !== null) {
+      try {
+        const apiManager = new ApiManager("/api/v1/auth/valtk");
+        const result = await apiManager.valTk(tk);
+        console.log(result);
+
+        if (result.success) {
+          this.username = result.payload.nombre;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      this.username = "";
+    }
+  }
+
+  closeSession() {
+    localStorage.removeItem("authToken");
+    this.username = "";
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.countCartItems();
+    this.valTk();
     window.addEventListener("cart-updated", () => {
       this.countCartItems();
     });
   }
 
   render() {
+    console.log(this.username);
     return html`<div class="bg-white">
       <div class="relative z-40 hidden" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black bg-opacity-25"></div>
@@ -641,16 +672,27 @@ export class StoreNavbar extends withTwind(LitElement) {
                   class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6"
                 >
                   <a
-                    href="/login"
+                    href=${this.username === "" ? "/login" : "#"}
                     class="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    ><div>Acceder</div></a
+                    ><div>
+                      ${this.username === ""
+                        ? "Acceder"
+                        : `Hola, ${this.username}`}
+                    </div></a
                   >
                   <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-                  <a
-                    href="/signin"
-                    class="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >Crear cuenta</a
-                  >
+                  ${this.username === ""
+                    ? html`<a
+                        href="/signin"
+                        class="text-sm font-medium text-gray-700 hover:text-gray-800"
+                        >Crear cuenta</a
+                      >`
+                    : html`<button
+                        @click=${() => this.closeSession()}
+                        class="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Cerrar sesión
+                      </button>`}
                 </div>
 
                 <!-- Cart -->
