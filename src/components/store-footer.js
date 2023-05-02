@@ -19,8 +19,7 @@ export class StoreFooter extends withTwind(LitElement) {
               alt="Company name"
             />
             <p class="text-sm leading-6 text-gray-300">
-              Making the world a better place through constructing elegant
-              hierarchies.
+              Hacemos de ti y tu mundo de colores
             </p>
             <div class="flex space-x-6">
               <a href="#" class="text-gray-500 hover:text-gray-400">
@@ -102,7 +101,7 @@ export class StoreFooter extends withTwind(LitElement) {
             <div class="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 class="text-sm font-semibold leading-6 text-white">
-                  Solutions
+                  Enlaces
                 </h3>
                 <ul role="list" class="mt-6 space-y-4">
                   <li>
@@ -116,56 +115,56 @@ export class StoreFooter extends withTwind(LitElement) {
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Analytics</a
+                      >Promociones</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Commerce</a
+                      >Dashboard</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Insights</a
+                      >Sucursales</a
                     >
                   </li>
                 </ul>
               </div>
               <div class="mt-10 md:mt-0">
                 <h3 class="text-sm font-semibold leading-6 text-white">
-                  Support
+                  Soporte
                 </h3>
                 <ul role="list" class="mt-6 space-y-4">
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Pricing</a
+                      >Chatea con nosotros</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Documentation</a
+                      >Soporte teléfonico</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Guides</a
+                      >Soporte por email</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >API Status</a
+                      >Devoluciones</a
                     >
                   </li>
                 </ul>
@@ -174,14 +173,14 @@ export class StoreFooter extends withTwind(LitElement) {
             <div class="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 class="text-sm font-semibold leading-6 text-white">
-                  Company
+                  Empresa
                 </h3>
                 <ul role="list" class="mt-6 space-y-4">
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >About</a
+                      >Acerca de</a
                     >
                   </li>
                   <li>
@@ -195,21 +194,21 @@ export class StoreFooter extends withTwind(LitElement) {
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Jobs</a
+                      >Trabaja con nosotros</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Press</a
+                      >Prensa</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Partners</a
+                      >Socios</a
                     >
                   </li>
                 </ul>
@@ -223,21 +222,21 @@ export class StoreFooter extends withTwind(LitElement) {
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Claim</a
+                      >Reclamos</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Privacy</a
+                      >Política de privacidad</a
                     >
                   </li>
                   <li>
                     <a
                       href="#"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
-                      >Terms</a
+                      >Términos del servicio</a
                     >
                   </li>
                 </ul>
@@ -247,7 +246,7 @@ export class StoreFooter extends withTwind(LitElement) {
         </div>
         <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
           <p class="text-xs leading-5 text-gray-400">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+            &copy; 2023 Tienda Bootcamp, Todos los derechos reservados.
           </p>
         </div>
       </div>

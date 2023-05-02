@@ -46,7 +46,7 @@ class RouterComponent extends LitElement {
       case "/login":
         return html`<login-page></login-page>`;
       case "/orders":
-        html`<orders-page></orders-page>`;
+        return html`<orders-page></orders-page>`;
       case "/dashboard/product-add":
         return html`<product-add></product-add>`;
       case "/dashboard/product-list":

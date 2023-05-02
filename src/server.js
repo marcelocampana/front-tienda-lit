@@ -57,14 +57,6 @@ app.get(["/", "/cart", "/login", "/signin", "/checkout"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.get(
-  ["/", "/cart", "/login", "/signin"],
-
-  (req, res) => {
-    res.sendFile(__dirname + "/public/index.html");
-  }
-);
-
 app.get(["/orders"], authMiddleware, (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });

@@ -17,7 +17,7 @@ export class StoreLogin extends withTwind(LitElement) {
     this.userId = "";
     this.currentUser = [];
     this.href = "/dashboard/product-list";
-    this.endUserRoleHref = "/checkout";
+    this.endUserRoleHref = "/orders";
     this.showAlert = false;
   }
 
@@ -108,7 +108,7 @@ export class StoreLogin extends withTwind(LitElement) {
   closeAlert() {
     setTimeout(() => {
       this.showAlert = false;
-    }, 7000);
+    }, 3000);
   }
 
   render() {

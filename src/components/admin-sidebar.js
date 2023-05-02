@@ -16,13 +16,10 @@ export class AdminSidebar extends withTwind(LitElement) {
 
   constructor() {
     super();
-    this.userName = localStorage.getItem("currentUserName");
   }
 
   logout() {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("currentUserEmail");
-    localStorage.removeItem("currentUserName");
     window.location.href = "/login";
   }
 
@@ -33,27 +30,9 @@ export class AdminSidebar extends withTwind(LitElement) {
           <div class="fixed inset-0 bg-gray-900/80"></div>
 
           <div class="fixed inset-0 flex">
-            <!--
-        Off-canvas menu, show/hide based on off-canvas menu state.
-
-        Entering: "transition ease-in-out duration-300 transform"
-          From: "-translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transition ease-in-out duration-300 transform"
-          From: "translate-x-0"
-          To: "-translate-x-full"
-      -->
+    
             <div class="relative mr-16 flex w-full max-w-xs flex-1">
-              <!--
-          Close button, show/hide based on off-canvas menu state.
-
-          Entering: "ease-in-out duration-300"
-            From: "opacity-0"
-            To: "opacity-100"
-          Leaving: "ease-in-out duration-300"
-            From: "opacity-100"
-            To: "opacity-0"
-        -->
+  
               <div
                 class="absolute left-full top-0 flex w-16 justify-center pt-5"
               >
@@ -76,7 +55,7 @@ export class AdminSidebar extends withTwind(LitElement) {
                 </button>
               </div>
 
-              <!-- Sidebar component, swap this element with another sidebar if you like -->
+        
               <div
                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10"
               >
@@ -92,7 +71,7 @@ export class AdminSidebar extends withTwind(LitElement) {
                     <li>
                       <ul role="list" class="-mx-2 space-y-1">
                         <li>
-                          <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
+            
                           <protected-link
                             text="Productos"
                             href="/dashboard/product-list"

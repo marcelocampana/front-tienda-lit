@@ -272,9 +272,6 @@ export class StoreCart extends withTwind(LitElement) {
                     href="#"
                     class="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
                   >
-                    <span class="sr-only"
-                      >Learn more about how shipping is calculated</span
-                    >
                     <svg
                       class="h-5 w-5"
                       viewBox="0 0 20 20"
@@ -290,7 +287,9 @@ export class StoreCart extends withTwind(LitElement) {
                   </a>
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  ${this.clpCurrencyFormat(this.shippingAmount)}
+                  ${this.shippingAmount
+                    ? this.clpCurrencyFormat(this.shippingAmount)
+                    : "$0"}
                 </dd>
               </div>
               <div
@@ -302,9 +301,6 @@ export class StoreCart extends withTwind(LitElement) {
                     href="#"
                     class="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
                   >
-                    <span class="sr-only"
-                      >Learn more about how tax is calculated</span
-                    >
                     <svg
                       class="h-5 w-5"
                       viewBox="0 0 20 20"

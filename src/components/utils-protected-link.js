@@ -12,6 +12,7 @@ class ProtectedLink extends withTwind(LitElement) {
       text: { type: String },
       class: { type: String },
       svgCode: { type: String },
+      style: { type: String },
     };
   }
 
@@ -21,6 +22,7 @@ class ProtectedLink extends withTwind(LitElement) {
     this.text = "";
     this.class = "";
     this.svgCode = "";
+    this.style = "";
   }
 
   async handleClick(e) {
@@ -49,7 +51,12 @@ class ProtectedLink extends withTwind(LitElement) {
   render() {
     return html`
       <slot></slot>
-      <a href="${this.href}" @click="${this.handleClick}" class="${this.class}">
+      <a
+        href="${this.href}"
+        @click="${this.handleClick}"
+        class="${this.class}"
+        style="${this.style}"
+      >
         ${this.svgCode ? unsafeSVG(this.svgCode) : this.text}
       </a>
     `;
