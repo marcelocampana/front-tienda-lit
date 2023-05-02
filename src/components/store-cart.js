@@ -92,11 +92,6 @@ export class StoreCart extends withTwind(LitElement) {
     }
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.lsCart();
-  }
-
   selectOptions(stock, quantity) {
     let maxItems =
       stock <= this.maxItemsPerProduct ? stock : this.maxItemsPerProduct;
@@ -109,6 +104,11 @@ export class StoreCart extends withTwind(LitElement) {
       }
     }
     return options;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.lsCart();
   }
 
   render() {

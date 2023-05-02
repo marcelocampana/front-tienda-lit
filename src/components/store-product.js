@@ -35,9 +35,11 @@ export class StoreProduct extends withTwind(LitElement) {
   }
 
   addToCart(productId) {
-    localStorage.getItem("log") === "true"
-      ? this.addToCardDB(productId)
-      : this.addToCartLS(productId);
+    // localStorage.getItem("log") === "true"
+    //   ? this.addToCardDB(productId)
+    //   : this.addToCartLS(productId);
+
+    this.addToCartLS(productId);
 
     this.productAdded = this.cart.filter(
       (item) => item.product_id === productId

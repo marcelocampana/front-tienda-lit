@@ -53,7 +53,7 @@ app.use(
 
 app.use(express.json());
 
-app.get(["/", "/cart", "/login", "/signin"], (req, res) => {
+app.get(["/", "/cart", "/login", "/signin", "/checkout"], (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
@@ -65,7 +65,7 @@ app.get(
   }
 );
 
-app.get(["/checkout", "/orders"], authMiddleware, (req, res) => {
+app.get(["/orders"], authMiddleware, (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
