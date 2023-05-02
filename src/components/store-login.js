@@ -55,8 +55,8 @@ export class StoreLogin extends withTwind(LitElement) {
             routerComponent.route = this.href;
           } else {
             this.userId = this.currentUser[0].userId;
-            await this.addLStoDBCart();
-            localStorage.setItem("log", true);
+            // await this.addLStoDBCart();
+            // localStorage.setItem("log", true);
             window.history.pushState({}, "", this.endUserRoleHref);
             routerComponent.route = this.endUserRoleHref;
           }
