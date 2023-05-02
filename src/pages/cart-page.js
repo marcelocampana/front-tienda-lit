@@ -6,8 +6,7 @@ export class CartPage extends LitElement {
   render() {
     return html` <store-layout>
       <store-cart></store-cart>
-      ></store-layout
-    >`;
+    </store-layout>`;
   }
 }
 

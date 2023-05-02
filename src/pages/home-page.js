@@ -9,9 +9,7 @@ export class HomePage extends LitElement {
     return html`
       <store-layout>
         <store-carrousel></store-carrousel>
-            <store-filter> </store-filter>
-          </store-layout>
-        </store-layout>
+        <store-filter> </store-filter>
       </store-layout>
     `;
   }

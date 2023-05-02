@@ -19,6 +19,8 @@ export class StoreFilter extends withTwind(LitElement) {
     this.categories = [];
     this.products = [];
     this.resultProducts = [];
+    this.countCartItems = 0;
+    this.totalCountCartItems = 0;
   }
 
   async getCategoriesCount() {
@@ -251,7 +253,7 @@ export class StoreFilter extends withTwind(LitElement) {
               Nuevos Productos
             </h1>
             <p class="mt-4 text-base text-gray-500">
-           Conoce nuestra nueva línea toda temporada para que te veas como quieras cuando quieras!
+           Conoce nuestra nueva línea toda temporada para que luzcas como quieres cuando quieras!
             </p>
           </div>
 

@@ -23,6 +23,7 @@ export class StoreCart extends withTwind(LitElement) {
     this.shippingAmount = 0;
     this.iva = 0;
     this.totalOrderAmount = 0;
+    this.maxItemsPerProduct = 8;
   }
 
   lsCart() {
@@ -33,11 +34,11 @@ export class StoreCart extends withTwind(LitElement) {
   }
 
   calculateTotalCart() {
-    const totalCart = this.cartItems.reduce((acc, cur) => {
-      console.log(cur);
-      return acc + cur.price * cur.quantity;
-    }, 0);
-    console.log(totalCart);
+    const totalCart =
+      this.cartItems &&
+      this.cartItems.reduce((acc, cur) => {
+        return acc + cur.price * cur.quantity;
+      }, 0);
     this.totalCart = totalCart;
     this.calculateShipping(totalCart);
     this.calculateIva(totalCart);
@@ -46,7 +47,9 @@ export class StoreCart extends withTwind(LitElement) {
 
   calculateShipping(totalCart) {
     this.shippingAmount =
-      this.cartItems.length > 0 && totalCart < 30000 ? 2500 : 0;
+      this.cartItems && this.cartItems.length > 0 && totalCart < 30000
+        ? 2500
+        : 0;
   }
 
   calculateIva(totalCart) {
@@ -65,24 +68,50 @@ export class StoreCart extends withTwind(LitElement) {
     localStorage.setItem("cart", JSON.stringify([...this.cartItems]));
   }
 
+  clpCurrencyFormat(amount) {
+    if (amount) {
+      const currencyFormat = amount.toLocaleString("es-CL", {
+        style: "currency",
+        currency: "CLP",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+
+      return currencyFormat;
+    }
+  }
+
+  changeQuantity(newQuantity, productId) {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const index = cart.findIndex((item) => item.product_id === productId);
+    if (index !== -1) {
+      cart[index].quantity = parseInt(newQuantity);
+      this.cartItems = cart;
+      this.calculateTotalCart();
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.lsCart();
   }
 
-  clpCurrencyFormat(amount) {
-    const currencyFormat = amount.toLocaleString("es-CL", {
-      style: "currency",
-      currency: "CLP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-
-    return currencyFormat;
+  selectOptions(stock, quantity) {
+    let maxItems =
+      stock <= this.maxItemsPerProduct ? stock : this.maxItemsPerProduct;
+    const options = [];
+    for (let i = 1; i <= maxItems; i++) {
+      if (i === quantity) {
+        options.push(html`<option value=${i} selected>${i}</option>`);
+      } else {
+        options.push(html`<option value=${i}>${i}</option>`);
+      }
+    }
+    return options;
   }
 
   render() {
-    console.log(this.cartItems, this.totalCart);
     return html`<div class="bg-white">
       <div
         class="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8"
@@ -125,7 +154,7 @@ export class StoreCart extends withTwind(LitElement) {
                             <h3 class="text-sm">
                               <a
                                 href="#"
-                                class="font-medium text-gray-700 hover:text-gray-800"
+                                class="font-medium text-indigo-700 hover:text-indigo-800"
                                 >${item.name}</a
                               >
                             </h3>
@@ -139,8 +168,16 @@ export class StoreCart extends withTwind(LitElement) {
                               Large
                             </p>
                           </div>
-                          <p class="mt-1 text-sm font-medium text-gray-900">
-                            ${this.clpCurrencyFormat(parseInt(item.price))}
+                          <p class="mt-1 text-sm  text-gray-900">
+                         <div class="text-sm"> ${
+                           item.price &&
+                           this.clpCurrencyFormat(parseInt(item.price))
+                         } c/u </div>
+                         <div class="text-sm font-medium mt-1">    
+                            ${this.clpCurrencyFormat(
+                              parseInt(item.price && item.price * item.quantity)
+                            )} total</div>
+                   
                           </p>
                         </div>
 
@@ -151,16 +188,14 @@ export class StoreCart extends withTwind(LitElement) {
                           <select
                             id="quantity-0"
                             name="quantity-0"
+                            @change =${(e) =>
+                              this.changeQuantity(
+                                e.target.value,
+                                item.product_id
+                              )}
                             class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                           >
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
+                            ${this.selectOptions(item.stock, item.quantity)}
                           </select>
 
                           <div class="absolute right-0 top-0">
@@ -205,6 +240,11 @@ export class StoreCart extends withTwind(LitElement) {
                   </li>`
               )}
             </ul>
+            ${this.cartItems && this.cartItems.length === 0
+              ? html`<div class="text-xl text-gray-600 text-center mt-24">
+                  El carrito está vacío :(
+                </div>`
+              : null}
           </section>
 
           <!-- Order summary -->

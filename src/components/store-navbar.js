@@ -6,10 +6,34 @@ import config from "../../twind.config.js";
 const withTwind = install(config);
 
 export class StoreNavbar extends withTwind(LitElement) {
+  static get properties() {
+    return {
+      cartItems: { type: Array },
+      totalCountCartItems: { type: Number },
+    };
+  }
+
   constructor() {
     super();
     this.currentUserName = localStorage.getItem("currentUserName");
   }
+
+  countCartItems() {
+    this.cartItems = JSON.parse(localStorage.getItem("cart"));
+    const totalCartItems =
+      this.cartItems &&
+      this.cartItems.reduce((acc, cur) => {
+        return acc + cur.quantity;
+      }, 0);
+    console.log(totalCartItems);
+    this.totalCountCartItems = totalCartItems;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.countCartItems();
+  }
+
   render() {
     return html`<div class="bg-white">
       <div class="relative z-40 hidden" role="dialog" aria-modal="true">
@@ -59,7 +83,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                     role="tab"
                     type="button"
                   >
-                    Tienda
+                    Catálogo
                   </a>
 
                   <!-- Selected: "border-indigo-600 text-indigo-600", Not Selected: "border-transparent text-gray-900" -->
@@ -70,7 +94,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                     role="tab"
                     type="button"
                   >
-                    Hombre
+                    Mis pedidos
                   </button>
                 </div>
               </div>
@@ -530,8 +554,8 @@ export class StoreNavbar extends withTwind(LitElement) {
 
               <!-- Logo -->
               <div class="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span class="sr-only">Your Company</span>
+                <a href="/">
+                  <span class="sr-only"></span>
                   <img
                     class="h-10 w-auto"
                     src="images/logo-tienda.png"
@@ -552,7 +576,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                         class="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                         aria-expanded="false"
                       >
-                        Tienda
+                        Catálogo
                       </a>
                     </div>
 
@@ -589,7 +613,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                         class="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                         aria-expanded="false"
                       >
-                        Hombre
+                        Mis pedidos
                       </button>
                     </div>
 
@@ -606,18 +630,6 @@ export class StoreNavbar extends withTwind(LitElement) {
                       </div>
                     </div>
                   </div>
-
-                  <a
-                    href="#"
-                    class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >Mujer</a
-                  >
-
-                  <a
-                    href="#"
-                    class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >Infantil</a
-                  >
                 </div>
               </div>
 
@@ -657,7 +669,7 @@ export class StoreNavbar extends withTwind(LitElement) {
                     </svg>
                     <span
                       class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"
-                      >0</span
+                      >${this.totalCountCartItems}</span
                     >
                     <span class="sr-only">items in cart, view bag</span>
                   </a>
