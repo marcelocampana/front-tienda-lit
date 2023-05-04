@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
-import { ApiManager } from "../services/ApiManager.js";
 import "./utils-notification.js";
 
 const withTwind = install(config);
@@ -35,10 +34,6 @@ export class StoreProduct extends withTwind(LitElement) {
   }
 
   addToCart(productId) {
-    // localStorage.getItem("log") === "true"
-    //   ? this.addToCardDB(productId)
-    //   : this.addToCartLS(productId);
-
     this.addToCartLS(productId);
 
     this.productAdded = this.cart.filter(
@@ -47,15 +42,6 @@ export class StoreProduct extends withTwind(LitElement) {
 
     window.dispatchEvent(new CustomEvent("cart-updated"));
     this.showNotification = true;
-  }
-
-  async addToCardDB(productId) {
-    await this.valTk();
-
-    console.log(this.userId);
-
-    // const apiManager = new ApiManager("/api/v1/shoppingCart");
-    // const getResult = await apiManager.getData(userId);
   }
 
   addToCartLS(productId) {

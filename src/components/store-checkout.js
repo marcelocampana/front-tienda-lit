@@ -1,7 +1,9 @@
 import { LitElement, html } from "lit";
+import { v4 as uuidv4 } from "uuid";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
+import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 
@@ -13,17 +15,25 @@ export class StoreCheckout extends withTwind(LitElement) {
       shippingAmount: { type: Number },
       iva: { type: Number },
       totalOrderAmount: { type: Number },
+      username: { type: String },
+      userId: { type: String },
+      userEmail: { type: String },
+      totalAmount: { type: Number },
     };
   }
 
   constructor() {
     super();
+    this.username = "";
+    this.userId = 0;
+    this.userEmail = "";
     this.cartItems = [];
     this.totalCart = 0;
     this.shippingAmount = 0;
     this.iva = 0;
     this.totalOrderAmount = 0;
     this.maxItemsPerProduct = 8;
+    this.totalAmount = 0;
   }
 
   lsCart() {
@@ -106,9 +116,91 @@ export class StoreCheckout extends withTwind(LitElement) {
     return options;
   }
 
+  async valTk() {
+    const tk = localStorage.getItem("authToken");
+    if (tk !== null) {
+      try {
+        const apiManager = new ApiManager("/api/v1/auth/valtk");
+        const result = await apiManager.valTk(tk);
+
+        if (result.success) {
+          this.username = result.payload.nombre;
+          this.userId = result.payload.userId;
+          this.userEmail = result.payload.email;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      this.userId = 0;
+      this.username = "";
+      this.userEmail = "";
+    }
+  }
+
+  async submitHandle(e) {
+    e.preventDefault();
+
+    if (this.cartItems.length > 0) {
+      const orderApiManager = new ApiManager("/api/v1/orders");
+      const orderDetailApiManager = new ApiManager("/api/v1/order-details");
+
+      const formData = {
+        name: `${e.target.firstname.value} ${e.target.lastname.value}`,
+        lastname: e.target.lastname.value,
+        email: e.target.email.value,
+        phone: e.target.phone.value,
+        shippingAddress: `${e.target.address.value} Nº${e.target.apartment.value}, ${e.target.county.value}, ${e.target.city.value}, Región ${e.target.region.value}`,
+        postalCode: e.target.postalcode.value,
+      };
+
+      let allProducts = [];
+      await Promise.all(
+        this.cartItems.map(async (item) => {
+          const productApiManager = new ApiManager("/api/v1/products");
+          const productItem = await productApiManager.getData(item.product_id);
+          allProducts.push(productItem);
+        })
+      );
+      this.totalAmount = allProducts.reduce((acc, cur, index) => {
+        return acc + cur.price * this.cartItems[index].quantity;
+      }, 0);
+
+      const newOrder = await orderApiManager.addData({
+        customer_name: formData.name,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        shipping_address: formData.shippingAddress,
+        customer_postalcode: formData.postalCode,
+        total_amount: this.totalAmount,
+        user_id: this.userId !== 0 ? this.userId : 1,
+        guest_id: this.userId !== 0 ? null : uuidv4(),
+        coupon_discount_id: 1,
+        payment_method_id: 1,
+        shipping_method: 1,
+        tax_id: 1,
+        status: "payment pending",
+      });
+
+      this.cartItems.forEach(async (item) => {
+        const productApiManager = new ApiManager("/api/v1/products");
+        const productItem = await productApiManager.getData(item.product_id);
+        await orderDetailApiManager.addData({
+          order_id: newOrder.order_id,
+          product_id: item.product_id,
+          price: productItem.price,
+          quantity: item.quantity,
+        });
+      });
+      localStorage.removeItem("cart");
+      window.location.href = `/orders?${newOrder.order_id}`;
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.lsCart();
+    this.valTk();
   }
 
   render() {
@@ -118,7 +210,10 @@ export class StoreCheckout extends withTwind(LitElement) {
       >
         <h2 class="sr-only">Checkout</h2>
 
-        <form class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+        <form
+          class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
+          @submit=${this.submitHandle}
+        >
           <div>
             <div>
               <h2 class="text-lg font-medium text-gray-900">
@@ -134,9 +229,9 @@ export class StoreCheckout extends withTwind(LitElement) {
                 <div class="mt-1">
                   <input
                     type="email"
-                    id="email-address"
-                    name="email-address"
+                    name="email"
                     class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    value=${this.userEmail && this.userEmail}
                     required
                   />
                 </div>
@@ -151,15 +246,14 @@ export class StoreCheckout extends withTwind(LitElement) {
               >
                 <div>
                   <label
-                    for="first-name"
+                    for="firstname"
                     class="block text-sm font-medium text-gray-700"
                     >Nombre</label
                   >
                   <div class="mt-1">
                     <input
                       type="text"
-                      id="first-name"
-                      name="first-name"
+                      name="firstname"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -168,15 +262,14 @@ export class StoreCheckout extends withTwind(LitElement) {
 
                 <div>
                   <label
-                    for="last-name"
+                    for="lastname"
                     class="block text-sm font-medium text-gray-700"
                     >Apellido</label
                   >
                   <div class="mt-1">
                     <input
                       type="text"
-                      id="last-name"
-                      name="last-name"
+                      name="lastname"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -193,8 +286,6 @@ export class StoreCheckout extends withTwind(LitElement) {
                     <input
                       type="text"
                       name="address"
-                      id="address"
-                      autocomplete="street-address"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -205,13 +296,28 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="apartment"
                     class="block text-sm font-medium text-gray-700"
-                    >Casa/Depto/etc.</label
+                    >Casa/Depto/Of/etc.</label
                   >
                   <div class="mt-1">
                     <input
                       type="text"
                       name="apartment"
                       id="apartment"
+                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    for="county"
+                    class="block text-sm font-medium text-gray-700"
+                    >Comuna</label
+                  >
+                  <div class="mt-1">
+                    <input
+                      type="text"
+                      name="county"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -222,28 +328,10 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <label
                     for="city"
                     class="block text-sm font-medium text-gray-700"
-                    >Comuna</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    for="country"
-                    class="block text-sm font-medium text-gray-700"
                     >Ciudad</label
                   >
                   <div class="mt-1">
                     <select
-                      id="city"
                       name="city"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
@@ -266,7 +354,6 @@ export class StoreCheckout extends withTwind(LitElement) {
                     <input
                       type="text"
                       name="region"
-                      id="region"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -282,10 +369,8 @@ export class StoreCheckout extends withTwind(LitElement) {
                   <div class="mt-1">
                     <input
                       type="text"
-                      name="postal-code"
-                      id="postal-code"
+                      name="postalcode"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      required
                     />
                   </div>
                 </div>
@@ -300,7 +385,6 @@ export class StoreCheckout extends withTwind(LitElement) {
                     <input
                       type="text"
                       name="phone"
-                      id="phone"
                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       required
                     />
@@ -318,10 +402,6 @@ export class StoreCheckout extends withTwind(LitElement) {
                 <div
                   class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4"
                 >
-                  <!--
-                Checked: "border-transparent", Not Checked: "border-gray-300"
-                Active: "ring-2 ring-indigo-500"
-              -->
                   <label
                     class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none"
                   >
@@ -352,7 +432,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                         >
                       </span>
                     </span>
-                    <!-- Not Checked: "hidden" -->
+
                     <svg
                       class="h-5 w-5 text-indigo-600"
                       viewBox="0 0 20 20"
@@ -365,20 +445,13 @@ export class StoreCheckout extends withTwind(LitElement) {
                         clip-rule="evenodd"
                       />
                     </svg>
-                    <!--
-                  Active: "border", Not Active: "border-2"
-                  Checked: "border-indigo-500", Not Checked: "border-transparent"
-                -->
+
                     <span
                       class="pointer-events-none absolute -inset-px rounded-lg border-2"
                       aria-hidden="true"
                     ></span>
                   </label>
 
-                  <!--
-                Checked: "border-transparent", Not Checked: "border-gray-300"
-                Active: "ring-2 ring-indigo-500"
-              -->
                   <label
                     class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none"
                   >
@@ -409,7 +482,7 @@ export class StoreCheckout extends withTwind(LitElement) {
                         >
                       </span>
                     </span>
-                    <!-- Not Checked: "hidden" -->
+
                     <svg
                       class="h-5 w-5 text-indigo-600"
                       viewBox="0 0 20 20"
@@ -422,10 +495,6 @@ export class StoreCheckout extends withTwind(LitElement) {
                         clip-rule="evenodd"
                       />
                     </svg>
-                    <!--
-                  Active: "border", Not Active: "border-2"
-                  Checked: "border-indigo-500", Not Checked: "border-transparent"
-                -->
                     <span
                       class="pointer-events-none absolute -inset-px rounded-lg border-2"
                       aria-hidden="true"
@@ -436,146 +505,31 @@ export class StoreCheckout extends withTwind(LitElement) {
             </div>
 
             <!-- Pago -->
+
             <div class="mt-10 border-t border-gray-200 pt-10 hidden">
               <h2 class="text-lg font-medium text-gray-900">Pago</h2>
-
-              <fieldset class="mt-4">
-                <legend class="sr-only">Forma de pago</legend>
-                <div
-                  class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0"
-                >
-                  <div class="flex items-center">
-                    <input
-                      id="credit-card"
-                      name="payment-type"
-                      type="radio"
-                      checked
-                      class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <label
-                      for="credit-card"
-                      class="ml-3 block text-sm font-medium text-gray-700"
-                      >Tarjeta de crédito</label
-                    >
-                  </div>
-
-                  <div class="flex items-center">
-                    <input
-                      id="paypal"
-                      name="payment-type"
-                      type="radio"
-                      class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <label
-                      for="paypal"
-                      class="ml-3 block text-sm font-medium text-gray-700"
-                      >PayPal</label
-                    >
-                  </div>
-
-                  <div class="flex items-center">
-                    <input
-                      id="etransfer"
-                      name="payment-type"
-                      type="radio"
-                      class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <label
-                      for="etransfer"
-                      class="ml-3 block text-sm font-medium text-gray-700"
-                      >Transferencia</label
-                    >
-                  </div>
-                </div>
-              </fieldset>
-
-              <div class="mt-6 grid grid-cols-4 gap-x-4 gap-y-6">
-                <div class="col-span-4">
-                  <label
-                    for="card-number"
-                    class="block text-sm font-medium text-gray-700"
-                    >Número de tarjeta</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      id="card-number"
-                      name="card-number"
-                      autocomplete="cc-number"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-span-4">
-                  <label
-                    for="name-on-card"
-                    class="block text-sm font-medium text-gray-700"
-                    >Nombre</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      id="name-on-card"
-                      name="name-on-card"
-                      autocomplete="cc-name"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-span-3">
-                  <label
-                    for="expiration-date"
-                    class="block text-sm font-medium text-gray-700"
-                    >Expiración (MM/YY)</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      name="expiration-date"
-                      id="expiration-date"
-                      autocomplete="cc-exp"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    for="cvc"
-                    class="block text-sm font-medium text-gray-700"
-                    >CVC</label
-                  >
-                  <div class="mt-1">
-                    <input
-                      type="text"
-                      name="cvc"
-                      id="cvc"
-                      autocomplete="csc"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
-          <!-- Order summary -->
+          <!--  Resumen del pedido -->
           <div class="mt-10 lg:mt-0">
-            <h2 class="text-lg font-medium text-gray-900">
-              Resumen del pedido
-            </h2>
+            ${this.cartItems && this.cartItems.length > 0
+              ? html`<h2 class="text-lg font-medium text-gray-900">
+                    Resumen del pedido
+                  </h2>
 
-            <div
-              class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm"
-            >
-              <h3 class="sr-only">Items en el carrito</h3>
-              <ul role="list" class="divide-y divide-gray-200">
-                ${this.cartItems &&
-                this.cartItems.map(
-                  (item) =>
-                    html`<li class="flex px-4 py-6 sm:px-6">
+                  <div
+                    class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm"
+                  >
+                    <h3 class="sr-only">Items en el carrito</h3>
+                    <ul role="list" class="divide-y divide-gray-200">
+                      ${this.cartItems &&
+                      this.cartItems.map(
+                        (item) =>
+                          html`<li class="flex px-4 py-6 sm:px-6">
+                    <input class="hidden" type="text" value=${
+                      item.product_id
+                    } name="product_id">
                       <div class="flex-shrink-0">
                         <img
                           src="${item.image_url}"
@@ -650,51 +604,65 @@ export class StoreCheckout extends withTwind(LitElement) {
                         </div>
                       </div>
                     </li>`
-                )}
-              </ul>
-              <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
-                <div class="flex items-center justify-between">
-                  <dt class="text-sm">Subtotal</dt>
-                  <dd class="text-sm font-medium text-gray-900">
-                    ${this.clpCurrencyFormat(this.totalCart)}
-                  </dd>
-                </div>
-                <div class="flex items-center justify-between">
-                  <dt class="text-sm">Costo de envío</dt>
-                  <dd class="text-sm font-medium text-gray-900">
-                    ${this.shippingAmount
-                      ? this.clpCurrencyFormat(this.shippingAmount)
-                      : "$0"}
-                  </dd>
-                </div>
-                <div class="flex items-center justify-between">
-                  <dt class="text-sm">IVA</dt>
-                  <dd class="text-sm font-medium text-gray-900">
-                    ${this.clpCurrencyFormat(this.iva)}
-                  </dd>
-                </div>
-                <div
-                  class="flex items-center justify-between border-t border-gray-200 pt-6"
-                >
-                  <dt class="text-base font-medium">Total</dt>
-                  <dd class="text-base font-medium text-gray-900">
-                    ${this.clpCurrencyFormat(this.totalOrderAmount)}
-                  </dd>
-                </div>
-              </dl>
+                      )}
+                    </ul>
+                    <dl
+                      class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6"
+                    >
+                      <div class="flex items-center justify-between">
+                        <dt class="text-sm">Subtotal</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                          ${this.clpCurrencyFormat(this.totalCart)}
+                        </dd>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <dt class="text-sm">Costo de envío</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                          ${this.shippingAmount
+                            ? this.clpCurrencyFormat(this.shippingAmount)
+                            : "$0"}
+                        </dd>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <dt class="text-sm">IVA</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                          ${this.clpCurrencyFormat(this.iva)}
+                        </dd>
+                      </div>
+                      <div
+                        class="flex items-center justify-between border-t border-gray-200 pt-6"
+                      >
+                        <dt class="text-base font-medium">Total</dt>
+                        <dd class="text-base font-medium text-gray-900">
+                          ${this.clpCurrencyFormat(this.totalOrderAmount)}
+                        </dd>
+                      </div>
+                    </dl>
 
-              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-                <div class="text-right w-full">
-                  <button
-                    type="submit"
-                    class=" rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                    style="width:100%"
-                  >
-                    Confirmar pedido
-                  </button>
-                </div>
-              </div>
-            </div>
+                    <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                      <div class="text-right w-full">
+                        <button
+                          type="submit"
+                          class=" rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          style="width:100%"
+                        >
+                          Confirmar pedido
+                        </button>
+                      </div>
+                    </div>
+                  </div>`
+              : html`<div class="text-center mt-24">
+                    No existen productos selecionados
+                  </div>
+                  <div class="mt-3 text-center ">
+                    <a
+                      href="/"
+                      type="submit"
+                      class="w-64 rounded-md border border-transparent text-center bg-indigo-200 px-1 py-2 text-base font-medium text-indigo-600 shadow-sm hover:bg-indigo-300"
+                    >
+                      Continuar comprando
+                    </a>
+                  </div>`}
           </div>
         </form>
       </div>

@@ -30,7 +30,6 @@ export class StoreNavbar extends withTwind(LitElement) {
       this.cartItems.reduce((acc, cur) => {
         return acc + cur.quantity;
       }, 0);
-    console.log(totalCartItems);
     this.totalCountCartItems = totalCartItems;
   }
 
@@ -40,7 +39,6 @@ export class StoreNavbar extends withTwind(LitElement) {
       try {
         const apiManager = new ApiManager("/api/v1/auth/valtk");
         const result = await apiManager.valTk(tk);
-        console.log(result);
 
         if (result.success) {
           this.username = result.payload.nombre;
@@ -68,7 +66,6 @@ export class StoreNavbar extends withTwind(LitElement) {
   }
 
   render() {
-    console.log(this.username);
     return html`<div class="bg-white">
       <div class="relative z-40 hidden" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black bg-opacity-25"></div>

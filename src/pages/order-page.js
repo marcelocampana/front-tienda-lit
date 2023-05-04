@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import "../components/store-layout.js";
-import "../components/store-orders.js";
+import "../components/store-order.js";
 
 export class OrdersPage extends LitElement {
   render() {
@@ -12,4 +12,4 @@ export class OrdersPage extends LitElement {
   }
 }
 
-customElements.define("orders-page", OrdersPage);
+customElements.define("order-page", OrdersPage);

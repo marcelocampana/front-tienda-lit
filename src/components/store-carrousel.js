@@ -25,13 +25,13 @@ export class StoreCarrousel extends LitElement {
         data-bs-ride="carousel"
       >
         <div class="carousel-inner">
-          <div class="carousel-item">
+          <div class="carousel-item active">
             <img src="/images/banner.webp" class="d-block w-100" alt="..." />
           </div>
-          <div class="carousel-item active">
-            <img src=="/images/banner2.webp" class="d-block w-100" alt="..." />
-          </div>
           <div class="carousel-item">
+            <img src=="/images/banner.webp" class="d-block w-100" alt="..." />
+          </div>
+          <div class="carousel-item  active">
             <img src="/images/banner.webp" class="d-block w-100" alt="..." />
           </div>
         </div>

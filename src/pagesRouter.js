@@ -4,7 +4,7 @@ import "./components/utils-404.js";
 import "./pages/home-page.js";
 import "./pages/checkout-page.js";
 import "./pages/cart-page.js";
-import "./pages/orders-page.js";
+import "./pages/order-page.js";
 import "./pages/signin-page.js";
 import "./pages/login-page.js";
 import "./pages/dashboard/product-add.js";
@@ -45,8 +45,6 @@ class RouterComponent extends LitElement {
         return html`<signin-page></signin-page>`;
       case "/login":
         return html`<login-page></login-page>`;
-      case "/orders":
-        return html`<orders-page></orders-page>`;
       case "/dashboard/product-add":
         return html`<product-add></product-add>`;
       case "/dashboard/product-list":
@@ -54,6 +52,8 @@ class RouterComponent extends LitElement {
       default:
         if (this.route.indexOf("/dashboard/product-update") !== -1) {
           return html`<product-update></product-update>`;
+        } else if (this.route.indexOf("/order") !== -1) {
+          return html`<order-page></order-page>`;
         } else {
           return html`<utils-404></utils-404>`;
         }

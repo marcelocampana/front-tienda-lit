@@ -17,7 +17,7 @@ export class StoreLogin extends withTwind(LitElement) {
     this.userId = "";
     this.currentUser = [];
     this.href = "/dashboard/product-list";
-    this.endUserRoleHref = "/orders";
+    this.endUserRoleHref = "/checkout";
     this.showAlert = false;
   }
 
@@ -169,7 +169,7 @@ export class StoreLogin extends withTwind(LitElement) {
                       <a
                         href="/signin"
                         class="hidden font-semibold text-indigo-400 hover:text-indigo-300"
-                        >Forgot password?</a
+                        >Olvidate tu contraseña?</a
                       >
                     </div>
                   </div>

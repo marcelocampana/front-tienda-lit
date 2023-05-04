@@ -2,21 +2,49 @@ import { LitElement, html } from "lit";
 
 import install from "@twind/with-web-components";
 import config from "../../twind.config.js";
+import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 
 export class StoreOrders extends withTwind(LitElement) {
+  static get properties() {
+    return { order: {} };
+  }
+
+  constructor() {
+    super();
+    this.dateFormat = {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    };
+  }
+
+  async displayOrder() {
+    const urlParams = new URL(window.location.href);
+    const id = urlParams.search.split("?")[1];
+
+    const apiManager = new ApiManager("/api/v1/orders");
+    this.order = await apiManager.getData(id);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.displayOrder();
+  }
+
   render() {
+    console.log(this.order);
     return html`<div class="bg-white">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:pb-24">
         <div class="max-w-xl">
           <h1
             class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
           >
-            Tus pedidos
+            Tu pedido
           </h1>
           <p class="mt-2 text-sm text-gray-500">
-            Estos son los productos que has comprado con nosotros!
+            Estos son los productos que compraste con nosotros!
           </p>
         </div>
 
@@ -39,18 +67,28 @@ export class StoreOrders extends withTwind(LitElement) {
                   <div class="flex justify-between sm:block">
                     <dt class="font-medium text-gray-900">Fecha de compra</dt>
                     <dd class="sm:mt-1">
-                      <time datetime="2021-01-22">Enero 22, 2023</time>
+                      <time datetime="2021-01-22"
+                        >${this.order &&
+                        new Date(this.order.createdAt).toLocaleDateString(
+                          "es-ES",
+                          this.dateFormat
+                        )}</time
+                      >
                     </dd>
                   </div>
                   <div class="flex justify-between pt-6 sm:block sm:pt-0">
                     <dt class="font-medium text-gray-900">Numero de orden</dt>
-                    <dd class="sm:mt-1">L438501</dd>
+                    <dd class="sm:mt-1">
+                      ${this.order && this.order.order_id}
+                    </dd>
                   </div>
                   <div
                     class="flex justify-between pt-6 font-medium text-gray-900 sm:block sm:pt-0"
                   >
                     <dt>Total</dt>
-                    <dd class="sm:mt-1">$23.800</dd>
+                    <dd class="sm:mt-1">
+                      $ ${this.order && this.order.total_amount}
+                    </dd>
                   </div>
                 </dl>
                 <a
