@@ -57,7 +57,7 @@ export class StoreFilter extends withTwind(LitElement) {
   render() {
     return html`<div class="bg-white">
       <div>
-        <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+        <div class="relative z-40 hidden" role="dialog" aria-modal="true">
           <div class="fixed inset-0 bg-black bg-opacity-25"></div>
 
           <div class="fixed inset-0 z-40 flex">
@@ -121,7 +121,7 @@ export class StoreFilter extends withTwind(LitElement) {
               </p>
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-center hidden">
               <div class="relative inline-block text-left">
                 <div>
                   <button

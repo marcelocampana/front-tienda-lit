@@ -23,7 +23,6 @@ export class StoreOrders extends withTwind(LitElement) {
   async displayOrders() {
     const urlParams = new URL(window.location.href);
     const id = urlParams.search.split("?")[1];
-    console.log(id);
     const orderApiManager = new ApiManager("/api/v1/orders");
     const orders = await orderApiManager.getAllData();
     this.orders = orders.filter((order) => order.user_id == id);

@@ -6,9 +6,15 @@ import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 export class StoreSignin extends withTwind(LitElement) {
+  static get properties() {
+    return { showAlert: { type: Boolean } };
+  }
+
   constructor() {
     super();
     this.currentUser = [];
+    this.userId = "";
+    this.showAlert = false;
   }
 
   async handleSubmit(e) {
@@ -19,12 +25,22 @@ export class StoreSignin extends withTwind(LitElement) {
       email: e.target.email.value,
       password: e.target.password.value,
     };
-    const apiManager = new ApiManager("/api/v1/auth/new-user");
-    const currentUser = await apiManager.addData(newUser);
 
-    this.currentUser.push(currentUser);
+    const userApiManager = new ApiManager("/api/users");
+    const userExits = await userApiManager.getData(e.target.email.value);
+    if (userExits === null) {
+      const apiManager = new ApiManager("/api/v1/auth/new-user");
+      const currentUser = await apiManager.addData(newUser);
 
-    localStorage.setItem("authToken", this.currentUser[0].token);
+      this.currentUser.push(currentUser);
+
+      localStorage.setItem("authToken", this.currentUser[0].token);
+
+      this.userId = this.currentUser[0].userId;
+      window.location.href = "/";
+    } else {
+      this.showAlert = true;
+    }
   }
 
   render() {
@@ -44,9 +60,17 @@ export class StoreSignin extends withTwind(LitElement) {
        Crear cuenta
           </h2>
         </div>
+        
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" @submit=${this.handleSubmit}>
+         ${
+           this.showAlert === true
+             ? html`<utils-error text="Este email ya está registrado"
+                 ><utils-error></utils-error
+               ></utils-error>`
+             : null
+         }
+          <form class="space-y-6 mt-5" @submit=${this.handleSubmit}>
            <div>
               <label
                 for="fullName"

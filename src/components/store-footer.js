@@ -120,7 +120,7 @@ export class StoreFooter extends withTwind(LitElement) {
                   </li>
                   <li>
                     <a
-                      href="#"
+                      href="/dashboard"
                       class="text-sm leading-6 text-gray-300 hover:text-white"
                       >Dashboard</a
                     >

@@ -17,7 +17,6 @@ export class UtilsNotification extends withTwind(LitElement) {
   }
 
   handleClose() {
-    console.log("close");
     this.dispatchEvent(new CustomEvent("close"));
   }
 
