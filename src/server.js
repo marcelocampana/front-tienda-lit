@@ -13,7 +13,6 @@ const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    // return res.status(401).send({ message: "No token provided" });
     return res.redirect("/login");
   }
 
@@ -31,11 +30,9 @@ const authMiddleware = (req, res, next) => {
 
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
-      //return res.status(401).send({ message: "Invalid token" });
       return res.redirect("/login");
     }
 
-    // req.userId = decoded.id;
     return next();
   });
 };
