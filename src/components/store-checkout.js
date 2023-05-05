@@ -182,18 +182,26 @@ export class StoreCheckout extends withTwind(LitElement) {
         status: "payment pending",
       });
 
-      this.cartItems.forEach(async (item) => {
+      const orderDetailPromises = this.cartItems.map(async (item) => {
         const productApiManager = new ApiManager("/api/v1/products");
+
         const productItem = await productApiManager.getData(item.product_id);
-        await orderDetailApiManager.addData({
+        const addOrderDetail = await orderDetailApiManager.addData({
           order_id: newOrder.order_id,
           product_id: item.product_id,
           price: productItem.price,
           quantity: item.quantity,
         });
+        return addOrderDetail;
       });
-      localStorage.removeItem("cart");
-      window.location.href = `/orders?${newOrder.order_id}`;
+
+      const orderDetailResults = await Promise.all(orderDetailPromises);
+      const allOrderDetailsAdded = orderDetailResults.every((result) => result);
+
+      if (allOrderDetailsAdded) {
+        localStorage.removeItem("cart");
+        window.location.href = `/orders?${newOrder.order_id}`;
+      }
     }
   }
 
