@@ -6,14 +6,31 @@ Autor: Marcelo Campaña - Bootcamp Javascript FullStack Trainee
 
 El proyecto tiene como objetivo crear un prototipo de una tienda en línea para la venta de productos. Está altamente orientado al desarrollo con web components y programación orientada a objetos. Las funcionalidades principales incluyen:
 
-- Catálogo de productos con filtrado por categorías.
-- Envío de productos al carrito con carga al localStorage para usuarios sin una sesión activa y carga a la base de datos para usuarios con cuenta registrada y sesión activa.
+- Catálogo de productos con filtrado por categorías y envio al carrito.
+- Pagina de confirmacion de compra.
+- Pagina de dettale del pedido
+- Pagina de pedidos historicos.
 - Página de acceso único para cuentas de usuario final y administrador, la cual redirecciona al sitio web o mantenedor respectivamente.
 - Validación de acceso y perfil a través de JWT.
 - Mantenedor (CRUD) para la administración de productos de la tienda.
+- Página de productos mas vendidos.
 - Código minificado con webpack para mejorar la velocidad de carga y seguridad del aplicativo front.
-- API rest para el servicio de datos.
+- API rest para el servicio de datos con modelo ORM.
 - Uso de variables de entorno para el manejo de datos sensibles.
+
+## Descripción del proyecto y funcionamiento general del aplicativo
+
+### Datos de acceso para usuario final:
+
+- Usuario: cris@uno.com
+- Contraseña: 12345
+
+o puede registrarse como nuevo usuario.
+
+### Datos de acceso para administrador:
+
+- Usuario:edu@one.com
+- Contraseña: 12345
 
 ## Instalación
 
@@ -40,7 +57,7 @@ npm start
 - Utilización de sentencias repetitivas (front-tienda-lit/src/components/admin-product-list.js, front-tienda-lit/src/components/store-product.js).
 - Convenciones y estilos de programación (ambos proyectos en general incluyen módulos, componentes, programación orientada a objetos, encapsulación).
 - Utilización correcta de la estructura de datos (ambos proyectos tienen una estructura de directorios acorde a las buenas prácticas, separando los módulos y/o piezas de código en conjuntos de acuerdo al servicio que prestan).
-- Manipulación de archivos (escritura en archivo txt del log de conexiones de usuarios: api-tienda-lit/src/controllers/log/connections.txt, api-tienda-lit/src/controllers/auth.js).
+- Manipulación de archivos (escritura en archivo txt del log de conexiones de usuarios: api-tienda-lit/src/log/connections.txt, api-tienda-lit/src/controllers/auth.js).
 
 #### Página web y HTML
 
