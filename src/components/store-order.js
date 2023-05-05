@@ -6,7 +6,7 @@ import { ApiManager } from "../services/ApiManager.js";
 
 const withTwind = install(config);
 
-export class StoreOrders extends withTwind(LitElement) {
+export class StoreOrder extends withTwind(LitElement) {
   static get properties() {
     return { order: {}, products: [] };
   }
@@ -199,4 +199,4 @@ export class StoreOrders extends withTwind(LitElement) {
   }
 }
 
-customElements.define("store-orders", StoreOrders);
+customElements.define("store-order", StoreOrder);

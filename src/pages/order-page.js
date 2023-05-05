@@ -2,14 +2,14 @@ import { LitElement, html } from "lit";
 import "../components/store-layout.js";
 import "../components/store-order.js";
 
-export class OrdersPage extends LitElement {
+export class OrderPage extends LitElement {
   render() {
     return html`
       <store-layout>
-        <store-orders></store-orders>
+        <store-order></store-order>
       </store-layout>
     `;
   }
 }
 
-customElements.define("order-page", OrdersPage);
+customElements.define("order-page", OrderPage);

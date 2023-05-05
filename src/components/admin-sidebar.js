@@ -218,7 +218,6 @@ export class AdminSidebar extends withTwind(LitElement) {
                       </div>
                       <ul role="list" class="-mx-2 mt-2 space-y-1">
                         <li>
-                          <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                           <a
                             href="#"
                             class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -227,7 +226,7 @@ export class AdminSidebar extends withTwind(LitElement) {
                               class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
                               >H</span
                             >
-                            <span class="truncate">Heroicons</span>
+                            <span class="truncate">Ranking de ventas</span>
                           </a>
                         </li>
                         <li>
@@ -329,51 +328,31 @@ export class AdminSidebar extends withTwind(LitElement) {
                             </svg>
                           </protected-link>
                         </li>
+                          <li>
+                          <protected-link
+                            text="Ranking de ventas"
+                            href="/dashboard/product-ranking"
+                            class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-1 text-sm leading-6 font-semibold"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mt-1 ml-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+</svg>
+
+                          </protected-link>
+                        </li>
                       </ul>
                     </li>
                     <li>
                       <div
                         class="text-xs font-semibold leading-6 text-gray-400"
                       >
-                        Your teams
+                 
                       </div>
                       <ul role="list" class="-mx-2 mt-2 space-y-1">
                         <li>
-                          <a
-                            href="#"
-                            class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          >
-                            <span
-                              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                              >H</span
-                            >
-                            <span class="truncate">Heroicons</span>
-                          </a>
+                         
                         </li>
-                        <li>
-                          <a
-                            href="#"
-                            class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          >
-                            <span
-                              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                              >T</span
-                            >
-                            <span class="truncate">Tailwind Labs</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          >
-                            <span
-                              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                              >W</span
-                            >
-                            <span class="truncate">Workcation</span>
-                          </a>
-                        </li>
+                      
                       </ul>
                     </li>
                     <li class="-mx-6 mt-auto">

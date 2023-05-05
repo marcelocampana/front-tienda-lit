@@ -17,7 +17,7 @@ export class StoreLogin extends withTwind(LitElement) {
     this.userId = "";
     this.currentUser = [];
     this.href = "/dashboard/product-list";
-    this.endUserRoleHref = "/checkout";
+    this.endUserRoleHref = "";
     this.showAlert = false;
   }
 
@@ -42,6 +42,7 @@ export class StoreLogin extends withTwind(LitElement) {
 
       if (this.currentUser[0].token) {
         localStorage.setItem("authToken", this.currentUser[0].token);
+        this.endUserRoleHref = `/customer-orders?${this.currentUser[0].userId}`;
 
         const token = localStorage.getItem("authToken");
         const headers = new Headers();
@@ -55,8 +56,6 @@ export class StoreLogin extends withTwind(LitElement) {
             routerComponent.route = this.href;
           } else {
             this.userId = this.currentUser[0].userId;
-            // await this.addLStoDBCart();
-            // localStorage.setItem("log", true);
             window.history.pushState({}, "", this.endUserRoleHref);
             routerComponent.route = this.endUserRoleHref;
           }
@@ -64,46 +63,6 @@ export class StoreLogin extends withTwind(LitElement) {
       }
     }
   }
-
-  // async addLStoDBCart() {
-  //   const currentLSCart = localStorage.getItem("cart");
-  //   const parsedLSCurrentCart = JSON.parse(currentLSCart);
-  //   if (currentLSCart && parsedLSCurrentCart.length > 0) {
-  //     const apiManagerGet = new ApiManager(`/api/v1/shopping-carts`);
-  //     const checkDBCartItems = await apiManagerGet.getData(this.userId);
-  //     console.log("checkDBCartItems", checkDBCartItems);
-  //     parsedLSCurrentCart.forEach(async (element) => {
-  //       //  const apiManager = new ApiManager("/api/v1/shopping-carts");
-
-  //       const dBHasLSCartItems = checkDBCartItems.some(
-  //         (cartItem) => cartItem.product_id === element.product_id
-  //       );
-  //       console.log(dBHasLSCartItems);
-  //       if (dBHasLSCartItems) {
-  //         const dbProduct = checkDBCartItems.find(
-  //           (item) => item.product_id === element.product_id
-  //         );
-  //         const lsData = {
-  //           quantity: element.quantity + dbProduct.quantity,
-  //           product_id: element.product_id,
-  //           user_id: this.userId,
-  //         };
-  //         const apiManager = new ApiManager("/api/v1/shopping-carts/");
-  //         await apiManager.updateData(dbProduct.shopping_cart_id, lsData);
-  //         localStorage.removeItem("cart");
-  //       } else {
-  //         const lsData = {
-  //           quantity: element.quantity,
-  //           product_id: element.product_id,
-  //           user_id: this.userId,
-  //         };
-  //         const apiManager = new ApiManager("/api/v1/shopping-carts/");
-  //         await apiManager.addData(lsData);
-  //         localStorage.removeItem("cart");
-  //       }
-  //     });
-  //   }
-  // }
 
   closeAlert() {
     setTimeout(() => {

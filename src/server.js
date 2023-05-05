@@ -60,11 +60,16 @@ app.get(
   }
 );
 
+app.get("/customer-orders?:id", authMiddleware, (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
 app.get(
   [
     "/dashboard/product-list",
     "/dashboard/product-add",
     "/dashboard/product-update?:id",
+    "/dashboard/product-ranking",
   ],
   authMiddleware,
   (req, res) => {

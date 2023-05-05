@@ -42,6 +42,7 @@ export class StoreNavbar extends withTwind(LitElement) {
 
         if (result.success) {
           this.username = result.payload.nombre;
+          this.userId = result.payload.userId;
         }
       } catch (error) {
         console.log(error);
@@ -118,15 +119,12 @@ export class StoreNavbar extends withTwind(LitElement) {
                   </a>
 
                   <!-- Selected: "border-indigo-600 text-indigo-600", Not Selected: "border-transparent text-gray-900" -->
-                  <button
-                    id="tabs-1-tab-2"
+                  <protected-link
                     class="border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 px-1 text-base font-medium"
-                    aria-controls="tabs-1-panel-2"
-                    role="tab"
-                    type="button"
+                    href=${`/customers-orders`}
+                    text="Mis pedidos"
                   >
-                    Mis pedidos
-                  </button>
+                  </protected-link>
                 </div>
               </div>
 
@@ -644,7 +642,12 @@ export class StoreNavbar extends withTwind(LitElement) {
                         class="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                         aria-expanded="false"
                       >
-                        Mis pedidos
+                        <protected-link
+                          class="border-transparent text-gray-700 flex-1 whitespace-nowrap border-b-2 py-4 px-1 mt-1 text-base font-medium text-sm"
+                          href=${`/customer-orders?${this.userId}`}
+                          text="Mis pedidos"
+                        >
+                        </protected-link>
                       </button>
                     </div>
 
